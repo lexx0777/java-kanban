@@ -1,8 +1,9 @@
+package model;
+
 import java.util.ArrayList;
-//import java.util.Objects;
 
 public class Epic extends Task {
-    ArrayList<Integer> subtasksIds = new ArrayList<>();
+    private ArrayList<Integer> subtasksIds = new ArrayList<>();
 
     public Epic(int id, String title, String description) {
         super(id, title, description, TaskStatus.NEW);
@@ -14,6 +15,14 @@ public class Epic extends Task {
 
     public void setSubtasksIds(ArrayList<Integer> subtasksIds) {
         this.subtasksIds = subtasksIds;
+    }
+
+    public void cleanSubtasksIds() {
+        this.subtasksIds.clear();
+    }
+
+    public void removeSubtaskId(int id) {
+        this.subtasksIds.remove(this.subtasksIds.indexOf(id));
     }
 
     @Override

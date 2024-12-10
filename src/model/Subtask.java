@@ -1,13 +1,8 @@
-//import java.util.Objects;
+package model;
 
 public class Subtask extends Task {
-    int epicId;
-    /*
-    public Subtask(int id, String title, String description, TaskStatus status) {
-        super(id, title, description, status);
-        epicId = 0;
-    }
-    */
+    private int epicId;
+
     public Subtask(int id, String title, String description, TaskStatus status, int epicId) {
         super(id, title, description, status);
         this.epicId = epicId;

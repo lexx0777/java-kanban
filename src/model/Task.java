@@ -1,10 +1,12 @@
+package model;
+
 import java.util.Objects;
 
 public class Task {
-    public int id;
-    public String title;
-    public String description;
-    public TaskStatus status;
+    protected int id;
+    protected String title;
+    protected String description;
+    protected TaskStatus status;
 
     public Task(int id, String title, String description, TaskStatus status) {
         this.id = id;
@@ -15,7 +17,6 @@ public class Task {
 
     public boolean update(Task task) {
         if (task == null) return false;
-        //if (task.getClass() != this.getClass()) return false;
         setTitle(task.getTitle());
         setDescription(task.getDescription());
         setStatus(task.getStatus());

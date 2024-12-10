@@ -1,11 +1,12 @@
-//import java.util.ArrayList;
+import model.*;
+import controllers.*;
 
 public class Main {
 
     static TaskManager taskManager;
-    static Task    task;
+    static Task task;
     static Subtask subtask;
-    static Epic    epic;
+    static Epic epic;
 
 
     public static void main(String[] args) {
@@ -30,21 +31,24 @@ public class Main {
         taskManager.add(new Epic(0, "Epic1", "Описание Epic1"));
         taskManager.add(new Epic(0, "Epic2", "Описание Epic2"));
         taskManager.add(new Epic(0, "Epic3", "Описание Epic3"));
-        System.out.println(taskManager.epics.toString());
+        System.out.println(taskManager.getEpics().toString());
 
         epic  = taskManager.getEpicById(6);
         System.out.println("getEpicById " + epic.toString());
 
-        subtask = new Subtask(0, "subtask3_1", "Описание subtask3_1", TaskStatus.DONE, epic.id);
+        subtask = new Subtask(0, "subtask3_1", "Описание subtask3_1", TaskStatus.DONE, epic.getId());
         taskManager.add(subtask);
 
-        taskManager.add(new Subtask(0, "subtask3_2", "Описание subtask3_2", TaskStatus.IN_PROGRESS, epic.id));
-        System.out.println(taskManager.subtasks.toString());
+        taskManager.add(new Subtask(0, "subtask3_2", "Описание subtask3_2", TaskStatus.IN_PROGRESS, epic.getId()));
+        System.out.println(taskManager.getSubtasks().toString());
 
         subtask  = taskManager.getSubtaskById(8);
         System.out.println("subtask " + subtask.toString());
 
-        System.out.println("epics " + taskManager.epics.toString());
+        System.out.println("epics " + taskManager.getEpics().toString());
+
+        taskManager.removeSubtaskById(subtask.getId());
+        System.out.println("epics " + taskManager.getEpics().toString());
     }
     static void test3_upd_del() {
         task = taskManager.getTaskById(3);
@@ -53,19 +57,19 @@ public class Main {
         task.setStatus(TaskStatus.IN_PROGRESS);
         taskManager.update(task);
 
-        System.out.println("tasks " + taskManager.tasks.toString());
+        System.out.println("tasks " + taskManager.getTasks().toString());
 
         System.out.println("DEL EPIC 6 ");
         epic  = taskManager.getEpicById(6);
-        taskManager.removeEpicById(epic.id);
+        taskManager.removeEpicById(epic.getId());
 
-        System.out.println("epics " + taskManager.epics.toString());
-        System.out.println(taskManager.subtasks.toString());
+        System.out.println("epics " + taskManager.getEpics().toString());
+        System.out.println(taskManager.getSubtasks().toString());
     }
     static void test4_remove() {
         taskManager.removeAllTasks();
         taskManager.removeAllEpics();
-        System.out.println(taskManager.tasks.toString());
-        System.out.println(taskManager.epics.toString());
+        System.out.println(taskManager.getTasks().toString());
+        System.out.println(taskManager.getEpics().toString());
     }
 }
