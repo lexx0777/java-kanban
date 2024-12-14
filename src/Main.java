@@ -2,15 +2,15 @@ import model.*;
 import controllers.*;
 
 public class Main {
-
-    static TaskManager taskManager;
+    static Managers managers;
+    static InMemoryTaskManager taskManager;
     static Task task;
     static Subtask subtask;
     static Epic epic;
 
 
     public static void main(String[] args) {
-        taskManager = new TaskManager();
+        taskManager = Managers.getDefault();
 
         test1_tasks();
         test2_epics_subtasks();
