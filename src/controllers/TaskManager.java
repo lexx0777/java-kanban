@@ -3,7 +3,7 @@ package controllers;
 import model.*;
 import java.util.ArrayList;
 
-interface TaskManager {
+public interface TaskManager {
 
     void add(Task task) ;
 
@@ -44,4 +44,6 @@ interface TaskManager {
     ArrayList<Subtask> getSubtasks() ;
 
     ArrayList<Subtask> getSubtasks(int epicId) ;
+
+    HistoryManager getHistory();
 }

@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryHistoryManagerTest {
 
-    private InMemoryTaskManager taskManager;
+    private TaskManager taskManager;
     private HistoryManager historyManager;
 
     @BeforeEach

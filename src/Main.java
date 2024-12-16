@@ -3,7 +3,7 @@ import controllers.*;
 
 public class Main {
     static Managers managers;
-    static InMemoryTaskManager taskManager;
+    static TaskManager taskManager;
     static Task task;
     static Subtask subtask;
     static Epic epic;

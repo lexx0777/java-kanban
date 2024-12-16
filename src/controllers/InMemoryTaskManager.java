@@ -5,11 +5,13 @@ import model.*;
 import java.util.HashMap;
 import java.util.ArrayList;
 
-public class InMemoryTaskManager implements TaskManager {
+public class InMemoryTaskManager  implements TaskManager {
     private HashMap<Integer, Task> tasks = new HashMap<>();
     private HashMap<Integer, Epic> epics = new HashMap<>();
     private HashMap<Integer, Subtask> subtasks = new HashMap<>();
     private int nextId = 1;
+
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
     public void add(Task task) {
@@ -106,17 +108,23 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTaskById(int id) {
-        return tasks.get(id);
+        final Task task = tasks.get(id);
+        historyManager.add(task);  // <== !!!!!!!!!!!!!!!!!!!!!!!!!
+        return task;
     }
 
     @Override
     public Epic getEpicById(int id) {
-        return epics.get(id);
+        final Epic epic = epics.get(id);
+        historyManager.add(epic);  // <== !!!!!!!!!!!!!!!!!!!!!!!!!
+        return epic;
     }
 
     @Override
     public Subtask getSubtaskById(int id) {
-        return subtasks.get(id);
+        final Subtask subtask = subtasks.get(id);
+        historyManager.add(subtask);  // <== !!!!!!!!!!!!!!!!!!!!!!!!!
+        return subtask;
     }
 
     @Override
@@ -172,5 +180,10 @@ public class InMemoryTaskManager implements TaskManager {
             ret.add(subtask);
         }
         return ret;
+    }
+
+    @Override
+    public HistoryManager getHistory() {
+        return historyManager;
     }
 }

@@ -10,8 +10,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class ManagersTest {
     @Test
     void getDefault_returnsInitializedTaskManager() {
-        InMemoryTaskManager manager1 = Managers.getDefault();
-        InMemoryTaskManager manager2 = Managers.getDefault();
+        TaskManager manager1 = Managers.getDefault();
+        TaskManager manager2 = Managers.getDefault();
         assertNotNull(manager1);
         assertNotNull(manager2);
         assertNotEquals(manager1, manager2);
