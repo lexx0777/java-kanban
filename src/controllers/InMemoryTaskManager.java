@@ -42,7 +42,7 @@ public class InMemoryTaskManager  implements TaskManager {
     }
 
     @Override
-    public void updEpicStatus (Epic epic) {
+    public void updEpicStatus(Epic epic) {
         TaskStatus epicStatus = TaskStatus.DONE; //начнем с максимума
 
         for (Integer subtasksId : epic.getSubtasksIds()) {
