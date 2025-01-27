@@ -27,6 +27,7 @@ public class Main {
         task  = taskManager.getTaskById(3);
         System.out.println("task 3 " + task.toString());
     }
+
     static void test2_epics_subtasks() {
         taskManager.add(new Epic(0, "Epic1", "Описание Epic1"));
         taskManager.add(new Epic(0, "Epic2", "Описание Epic2"));
@@ -50,6 +51,7 @@ public class Main {
         taskManager.removeSubtaskById(subtask.getId());
         System.out.println("epics " + taskManager.getEpics().toString());
     }
+
     static void test3_upd_del() {
         task = taskManager.getTaskById(3);
         //task.setId(2);
@@ -66,6 +68,7 @@ public class Main {
         System.out.println("epics " + taskManager.getEpics().toString());
         System.out.println(taskManager.getSubtasks().toString());
     }
+
     static void test4_remove() {
         taskManager.removeAllTasks();
         taskManager.removeAllEpics();
