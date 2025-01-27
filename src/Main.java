@@ -2,7 +2,7 @@ import model.*;
 import controllers.*;
 
 public class Main {
-    static Managers managers;
+
     static TaskManager taskManager;
     static Task task;
     static Subtask subtask;
