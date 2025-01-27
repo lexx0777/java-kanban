@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 
-public class InMemoryHistoryManager implements HistoryManager{
+public class InMemoryHistoryManager implements HistoryManager {
 
-    final private HashMap<Integer, Node> historyMap = new HashMap<>(); //id, Node
+    private final HashMap<Integer, Node> historyMap = new HashMap<>(); //id, Node
     private Node head;
     private Node tail;
 
-    private void removeNode(Node node){
+    private void removeNode(Node node) {
         if (node != null) {
             if (node == tail
                     && node == head) {
@@ -37,7 +37,7 @@ public class InMemoryHistoryManager implements HistoryManager{
 
     private Node linkLast(Task task) {
         Node node = new Node(null, task, null);
-        if (task != null){
+        if (task != null) {
             if (tail == null) {
                 head = node;
                 tail = node;
