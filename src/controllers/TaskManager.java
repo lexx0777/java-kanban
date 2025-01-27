@@ -11,7 +11,7 @@ public interface TaskManager {
 
     boolean add(Subtask subtask);
 
-    void updEpicStatus (Epic epic);
+    void updEpicStatus(Epic epic);
 
     void update(Task task);
 
