@@ -56,6 +56,9 @@ public class Task {
         this.description = description;
     }
 
+    public TaskType getType() {
+        return TaskType.TASK;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -72,7 +75,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task #" + id + "\t[" + status + "]\t" + title
-                + " (" + description + ")";
+        //return "Task #" + id + "\t[" + status + "]\t" + title  + " (" + description + ")";
+        return id + "," + TaskType.TASK + "," + title + "," + status + "," + description + ",";
     }
 }
