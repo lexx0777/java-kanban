@@ -1,0 +1,9 @@
+id,type,name,status,description,epic
+1,TASK,убраться в комнате,NEW,пыль и пр ,
+2,TASK,Сходить в кино,NEW,купить билет и семки,
+3,EPIC,Дело,DONE,дело дело дело,
+4,EPIC,Сделать тз,DONE,успеть,
+5,EPIC,Epic3,DONE,Описание Epic3,
+7,SUBTASK,subtask3_1,IN_PROGRESS,Описание subtask3_1,5,
+8,SUBTASK,subtask3_1,DONE,Описание subtask3_1,5,
+9,SUBTASK,subtask3_1,IN_PROGRESS,Описание subtask3_1,5,
