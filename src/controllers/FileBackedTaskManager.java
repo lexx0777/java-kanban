@@ -5,7 +5,6 @@ import exceptions.ManagerSaveException;
 import model.*;
 
 import java.io.*;
-import java.util.ArrayList;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File file;
@@ -132,7 +131,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 fromString(line, taskManager);
             }
         } catch (IOException e) {
-            throw new ManagerSaveException("Ошибка во время загрузки из файла");
+            throw new ManagerLoadException("Ошибка во время загрузки из файла");
         }
         return taskManager;
     }
