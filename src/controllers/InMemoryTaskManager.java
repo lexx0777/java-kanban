@@ -188,4 +188,14 @@ public class InMemoryTaskManager  implements TaskManager {
     public HistoryManager getHistory() {
         return historyManager;
     }
+
+    @Override
+    public int getNextId() {
+        return nextId;
+    }
+
+    @Override
+    public void setNextId(int newNextId) {
+        nextId = newNextId;
+    }
 }

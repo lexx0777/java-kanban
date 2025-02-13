@@ -107,19 +107,21 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         String description = splitLine[4];
         switch (type) {
             case TaskType.TASK: {
-                update(new Task(id, title, description, status));
+                update(new Task(id, title, description, status));//add to MAP
                 break;
             }
             case TaskType.EPIC: {
-                update(new Epic(id, title, description));
+                update(new Epic(id, title, description));//add to MAP
                 break;
             }
             case TaskType.SUBTASK: {
                 int epicId = Integer.parseInt(splitLine[5]);
-                update(new Subtask(id, title, description, status, epicId));
+                update(new Subtask(id, title, description, status, epicId));//add to MAP
                 break;
             }
         }
+        if (getNextId() < id)
+            setNextId(id);
     }
 
     public static FileBackedTaskManager loadFromFile(File file) {
@@ -157,6 +159,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public static void main(String[] args) {
         System.out.println("Считываем данные:");
         FileBackedTaskManager taskManager = FileBackedTaskManager.loadFromFile(new File("resources/manager.csv"));
+/*
+        int i = 6;
+        Epic epic1 = new Epic(0, "Epic"+i, "Описание Epic"+i);
+        taskManager.add(epic1);
+        taskManager.add(new Subtask(0, "subtask"+i+"_1", "Описание subtask"+i+"_1", TaskStatus.NEW, epic1.getId()));
+        taskManager.add(new Subtask(0, "subtask"+i+"_2", "Описание subtask"+i+"_2", TaskStatus.DONE, epic1.getId()));
+        taskManager.add(new Subtask(0, "subtask"+i+"_3", "Описание subtask"+i+"_3", TaskStatus.IN_PROGRESS, epic1.getId()));
+*/
         System.out.println("Список задач:");
         for (Task task : taskManager.getTasks()) {
             System.out.println(task);
@@ -169,5 +179,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         for (Subtask subtask : taskManager.getSubtasks()) {
             System.out.println(subtask);
         }
+        taskManager.save();
     }
 }
