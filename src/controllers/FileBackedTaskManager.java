@@ -156,17 +156,17 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public static void main(String[] args) {
         System.out.println("Считываем данные:");
-        FileBackedTaskManager taskManager2 = FileBackedTaskManager.loadFromFile(new File("resources/manager.csv"));
+        FileBackedTaskManager taskManager = FileBackedTaskManager.loadFromFile(new File("resources/manager.csv"));
         System.out.println("Список задач:");
-        for (Task task : taskManager2.getTasks()) {
+        for (Task task : taskManager.getTasks()) {
             System.out.println(task);
         }
         System.out.println("Список эпиков:");
-        for (Epic epic : taskManager2.getEpics()) {
+        for (Epic epic : taskManager.getEpics()) {
             System.out.println(epic);
         }
         System.out.println("Список подзадач:");
-        for (Subtask subtask : taskManager2.getSubtasks()) {
+        for (Subtask subtask : taskManager.getSubtasks()) {
             System.out.println(subtask);
         }
     }
