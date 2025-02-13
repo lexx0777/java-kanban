@@ -44,7 +44,6 @@ public class InMemoryTaskManager  implements TaskManager {
     @Override
     public void updEpicStatus(Epic epic) {
         TaskStatus epicStatus = TaskStatus.DONE; //начнем с максимума
-
         for (Integer subtasksId : epic.getSubtasksIds()) {
             Subtask subtaskA = subtasks.get(subtasksId);
             switch (subtaskA.getStatus()) {
@@ -64,9 +63,7 @@ public class InMemoryTaskManager  implements TaskManager {
                     break;
             }
         }
-
         epic.setStatus(epicStatus);
-        //update(epic);
     }
 
     @Override
@@ -109,21 +106,21 @@ public class InMemoryTaskManager  implements TaskManager {
     @Override
     public Task getTaskById(int id) {
         final Task task = tasks.get(id);
-        historyManager.add(task);  // <== !!!!!!!!!!!!!!!!!!!!!!!!!
+        historyManager.add(task);
         return task;
     }
 
     @Override
     public Epic getEpicById(int id) {
         final Epic epic = epics.get(id);
-        historyManager.add(epic);  // <== !!!!!!!!!!!!!!!!!!!!!!!!!
+        historyManager.add(epic);
         return epic;
     }
 
     @Override
     public Subtask getSubtaskById(int id) {
         final Subtask subtask = subtasks.get(id);
-        historyManager.add(subtask);  // <== !!!!!!!!!!!!!!!!!!!!!!!!!
+        historyManager.add(subtask);
         return subtask;
     }
 

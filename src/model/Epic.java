@@ -26,8 +26,14 @@ public class Epic extends Task {
     }
 
     @Override
-    public String toString() {
-        return "Epic #" + id + "\t[" + status + "]\t" + title + " (" + description + ")" +
-                " - " + this.subtasksIds;
+    public TaskType getType() {
+        return TaskType.EPIC;
     }
+
+    @Override
+    public String toString() {
+        //return "Epic #" + id + "\t[" + status + "]\t" + title + " (" + description + ")" + " - " + this.subtasksIds;
+        return id + "," + TaskType.EPIC + "," + title + "," + status + "," + description + ",";
+    }
+
 }

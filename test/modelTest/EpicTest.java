@@ -16,7 +16,6 @@ class EpicTest {
     Epic epic2;
     Epic epic3;
 
-
     @BeforeEach
     void beforeEach() {
 
