@@ -1,8 +1,16 @@
 package exceptions;
 
-public class ManagerLoadException extends RuntimeException {
+import java.io.File;
 
-    public ManagerLoadException(String message) {
+public class ManagerLoadException extends RuntimeException {
+    File file;
+
+    public ManagerLoadException(String message, File file) {
         super(message);
+        this.file = file;
+    }
+
+    public String getDetailMessage() {
+        return String.format("%s - %s", getMessage(), file.getAbsolutePath());
     }
 }

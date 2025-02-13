@@ -18,7 +18,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     public FileBackedTaskManager() {
-        this.file = new File("manager.csv");
+        this.file = new File("resources/manager.csv");
     }
 
     @Override
@@ -98,7 +98,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return this.file;
     }
 
-    private static void fromString(String line, FileBackedTaskManager taskManager) {
+    private void fromString(String line) {
         String[] splitLine = line.split(","); //file format: id,type,name,status,description,epic
         int id = Integer.parseInt(splitLine[0]);
         TaskType type = TaskType.valueOf(splitLine[1]);
@@ -107,16 +107,16 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         String description = splitLine[4];
         switch (type) {
             case TaskType.TASK: {
-                taskManager.update(new Task(id, title, description, status));
+                update(new Task(id, title, description, status));
                 break;
             }
             case TaskType.EPIC: {
-                taskManager.update(new Epic(id, title, description));
+                update(new Epic(id, title, description));
                 break;
             }
             case TaskType.SUBTASK: {
                 int epicId = Integer.parseInt(splitLine[5]);
-                taskManager.update(new Subtask(id, title, description, status, epicId));
+                update(new Subtask(id, title, description, status, epicId));
                 break;
             }
         }
@@ -128,15 +128,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             String line = reader.readLine();//head
             while (reader.ready()) {
                 line = reader.readLine();
-                fromString(line, taskManager);
+                taskManager.fromString(line);
             }
         } catch (IOException e) {
-            throw new ManagerLoadException("Ошибка во время загрузки из файла");
+            throw new ManagerLoadException("Ошибка загрузки из файла", file);
         }
         return taskManager;
     }
 
-    private void save() throws ManagerSaveException {
+    private void save() {
         try (FileWriter writer = new FileWriter(file)) {
             String head = "id,type,name,status,description,epic\n";
             writer.write(head);
@@ -150,47 +150,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 writer.write(String.format("%s\n", subtask.toString()));
             }
         } catch (IOException e) {
-            throw new ManagerSaveException("Ошибка при сохранении файла - " + file);
+            throw new ManagerSaveException("Ошибка сохранения в файл", file);
         }
     }
 
     public static void main(String[] args) {
-        /*
-        FileBackedTaskManager taskManager = new FileBackedTaskManager();
-        Task task1 = new Task(1, "убраться в комнате", "пыль и пр " , TaskStatus.NEW);
-        taskManager.update(task1);
-        Task task2 = new Task(2, "Сходить в кино", "купить билет и семки", TaskStatus.NEW);
-        taskManager.update(task2);
-        Epic epic1 = new Epic(3, "Дело", "дело дело дело");
-        taskManager.update(epic1);
-        Epic epic2 = new Epic(4, "Сделать тз", "успеть");
-        taskManager.update(epic2);
-        Epic epic3 = new Epic(5, "Epic3", "Описание Epic3");
-        taskManager.update(epic3);
-        Subtask subtask1 = new Subtask(7, "subtask3_1", "Описание subtask3_1", TaskStatus.IN_PROGRESS, epic3.getId());
-        taskManager.update(subtask1);
-        Subtask subtask2 = new Subtask(8, "subtask3_1", "Описание subtask3_1", TaskStatus.DONE, epic3.getId());
-        taskManager.update(subtask2);
-        Subtask subtask3 = new Subtask(9, "subtask3_1", "Описание subtask3_1", TaskStatus.IN_PROGRESS, epic3.getId());
-        taskManager.update(subtask3);
-
-        System.out.println("Список задач исходный:");
-        for (Task task : taskManager.getTasks()) {
-            System.out.println(task);
-        }
-        System.out.println("Список эпиков исходный:");
-        for (Epic epic : taskManager.getEpics()) {
-            System.out.println(epic);
-        }
-        System.out.println("Список подзадач исходный:");
-        for (Subtask subtask : taskManager.getSubtasks()) {
-            System.out.println(subtask);
-        }
-        taskManager.save();
-        */
-
         System.out.println("Считываем данные:");
-        FileBackedTaskManager taskManager2 = FileBackedTaskManager.loadFromFile(new File("manager.csv"));
+        FileBackedTaskManager taskManager2 = FileBackedTaskManager.loadFromFile(new File("resources/manager.csv"));
         System.out.println("Список задач:");
         for (Task task : taskManager2.getTasks()) {
             System.out.println(task);
