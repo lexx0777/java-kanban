@@ -1,18 +1,26 @@
 package model;
 
 import java.util.Objects;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class Task {
     protected int id;
     protected String title;
     protected String description;
     protected TaskStatus status;
+    protected Duration duration;
+    protected LocalDateTime startTime;
+    protected LocalDateTime endTime;
 
-    public Task(int id, String title, String description, TaskStatus status) {
+    public Task(int id, String title, String description, TaskStatus status, Duration duration, LocalDateTime startTime) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.status = status;
+        this.duration = duration;
+        this.startTime = startTime;
+        this.endTime = startTime.plus(duration);
     }
 
     public boolean update(Task task) {
@@ -21,6 +29,9 @@ public class Task {
         setDescription(task.getDescription());
         setStatus(task.getStatus());
         setId(task.getId());
+        setDuration(task.getDuration());
+        setStartTime(task.getStartTime());
+        this.endTime = startTime.plus(duration);
         return true;
     }
 
@@ -60,6 +71,30 @@ public class Task {
         return TaskType.TASK;
     }
 
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -75,7 +110,8 @@ public class Task {
 
     @Override
     public String toString() {
-        //return "Task #" + id + "\t[" + status + "]\t" + title  + " (" + description + ")";
-        return id + "," + TaskType.TASK + "," + title + "," + status + "," + description + ",";
+        return id + "," + TaskType.TASK + "," + title + "," + status + "," + description + ","
+            + duration + "," + startTime + "," + endTime + ",";
+
     }
 }
