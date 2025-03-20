@@ -28,6 +28,6 @@ public class Subtask extends Task {
     @Override
     public String toString() {
         return id + "," + TaskType.SUBTASK + "," + title + "," + status + "," + description + "," + epicId + ","
-                + duration + "," + startTime + "," + endTime + ",";
+                + duration.toMinutes() + "," + startTime.format(formatter) + "," + endTime.format(formatter) + ",";
     }
 }

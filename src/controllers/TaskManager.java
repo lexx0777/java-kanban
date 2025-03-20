@@ -13,6 +13,8 @@ public interface TaskManager {
 
     void updEpicStatus(Epic epic);
 
+    void updEpicTime(Epic epic);
+
     void update(Task task);
 
     void update(Epic epic);

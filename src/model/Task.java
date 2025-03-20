@@ -1,5 +1,6 @@
 package model;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -13,6 +14,8 @@ public class Task {
     protected LocalDateTime startTime;
     protected LocalDateTime endTime;
 
+    public static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+
     public Task(int id, String title, String description, TaskStatus status, Duration duration, LocalDateTime startTime) {
         this.id = id;
         this.title = title;
@@ -21,6 +24,16 @@ public class Task {
         this.duration = duration;
         this.startTime = startTime;
         this.endTime = startTime.plus(duration);
+    }
+
+    public Task(int id, String title, String description, TaskStatus status) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.status = status;
+        this.duration = Duration.ZERO;
+        this.startTime = null;
+        this.endTime = null;
     }
 
     public boolean update(Task task) {
@@ -111,7 +124,7 @@ public class Task {
     @Override
     public String toString() {
         return id + "," + TaskType.TASK + "," + title + "," + status + "," + description + ","
-            + duration + "," + startTime + "," + endTime + ",";
+            + duration.toMinutes() + "," + startTime.format(formatter) + "," + endTime.format(formatter) + ",";
 
     }
 }

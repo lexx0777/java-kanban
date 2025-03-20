@@ -2,8 +2,11 @@ package controllers;
 
 import model.*;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.List;
 
 public class InMemoryTaskManager  implements TaskManager {
     private HashMap<Integer, Task> tasks = new HashMap<>();
@@ -64,6 +67,38 @@ public class InMemoryTaskManager  implements TaskManager {
             }
         }
         epic.setStatus(epicStatus);
+    }
+
+    @Override
+    public void updEpicTime(Epic epic) {
+        if (epic.getSubtasksIds().isEmpty()) {
+            epic.setDuration(Duration.ZERO);
+            epic.setStartTime(null);
+            epic.setEndTime(null);
+            return;
+        }
+        LocalDateTime startTime = null;
+        LocalDateTime endTime = null;
+        Duration totalDuration = Duration.ZERO;
+        for (Integer subtasksId : epic.getSubtasksIds()) {
+            Subtask subtaskA = subtasks.get(subtasksId);
+            if (subtaskA.getStartTime() != null) {
+                if (startTime == null) {
+                    startTime = subtaskA.getStartTime();
+                } else if (subtaskA.getStartTime().isBefore(startTime)) {
+                    startTime = subtaskA.getStartTime();
+                }
+                if (endTime == null) {
+                    endTime = subtaskA.getEndTime();
+                } else if (subtaskA.getEndTime().isAfter(endTime)) {
+                    endTime = subtaskA.getEndTime();
+                }
+                totalDuration = totalDuration.plus(subtaskA.getDuration());
+            }
+        }
+        epic.setStartTime(startTime);
+        epic.setEndTime(endTime);
+        epic.setDuration(totalDuration);
     }
 
     @Override
