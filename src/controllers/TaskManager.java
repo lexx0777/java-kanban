@@ -2,6 +2,7 @@ package controllers;
 
 import model.*;
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 public interface TaskManager {
 
@@ -52,4 +53,6 @@ public interface TaskManager {
     int getNextId();
 
     void setNextId(int newNextId);
+
+    TreeSet<Task> getPrioritizedTasks();
 }

@@ -4,17 +4,20 @@ import model.*;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class InMemoryTaskManager  implements TaskManager {
-    private HashMap<Integer, Task> tasks = new HashMap<>();
-    private HashMap<Integer, Epic> epics = new HashMap<>();
-    private HashMap<Integer, Subtask> subtasks = new HashMap<>();
+    private final HashMap<Integer, Task> tasks = new HashMap<>();
+    private final HashMap<Integer, Epic> epics = new HashMap<>();
+    private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
     private int nextId = 1;
 
     private final HistoryManager historyManager = Managers.getDefaultHistory();
+
+    private final Comparator<Task> comparator = Comparator.comparing(Task::getStartTime,
+            Comparator.nullsLast(Comparator.naturalOrder()));
+    private final TreeSet<Task> prioritizedTasks = new TreeSet<>(comparator);
 
     @Override
     public void add(Task task) {
@@ -209,14 +212,15 @@ public class InMemoryTaskManager  implements TaskManager {
         if (subtasks.isEmpty()) return new ArrayList<>();
         Epic   epic = epics.get(epicId);
         if (epic.getSubtasksIds().isEmpty()) return new ArrayList<>();
-
+        /*
         ArrayList<Subtask> ret = new ArrayList<>();
 
         for (Integer subtasksId : epic.getSubtasksIds()) {
             Subtask subtask = subtasks.get(subtasksId);
             ret.add(subtask);
         }
-        return ret;
+        return ret;*/
+        return epic.getSubtasksIds().stream().map(subtasks::get).collect(Collectors.toCollection(ArrayList::new));
     }
 
     @Override
@@ -232,5 +236,31 @@ public class InMemoryTaskManager  implements TaskManager {
     @Override
     public void setNextId(int newNextId) {
         nextId = newNextId;
+    }
+
+    @Override
+    public TreeSet<Task> getPrioritizedTasks() {
+        return prioritizedTasks.stream().filter(task -> Objects.nonNull(task.getStartTime()))
+                .collect(Collectors.toCollection(() -> new TreeSet<>(comparator)));
+    }
+
+    private boolean isValidate(Task task) {
+        return prioritizedTasks.stream()
+                .anyMatch(t -> t.getStartTime().isBefore(task.getEndTime())
+                        && task.getStartTime().isBefore(t.getEndTime()));
+    }
+
+    private boolean checkIntersectionTaskTime(Task task) {
+        if (!Objects.nonNull(task.getStartTime()) && !Objects.nonNull(task.getEndTime())) {
+            return false;
+        } else {
+            List<Task> intersectionsTasks = getPrioritizedTasks().stream().filter(prioritezedTask ->
+                            Objects.nonNull(prioritezedTask.getEndTime()))
+                    .filter(prioritizedTask -> (prioritizedTask.getStartTime().isBefore(task.getStartTime()) &&
+                            prioritizedTask.getEndTime().isAfter(task.getStartTime())) //||
+                            //(prioritizedTask.getStartTime().equals(task.getStartTime()) && prioritizedTask.getEndTime().equals(task.getEndTime())))
+                    ).toList();
+            return !intersectionsTasks.isEmpty();
+        }
     }
 }
