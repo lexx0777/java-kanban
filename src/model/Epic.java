@@ -38,8 +38,14 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return id + "," + TaskType.EPIC + "," + title + "," + status + "," + description + ","
-                + duration.toMinutes() + "," + startTime.format(formatter) + "," + endTime.format(formatter) + ",";
+        return id + ","
+                + TaskType.EPIC + ","
+                + title + ","
+                + status + ","
+                + description + ","
+                + duration.toMinutes() + ","
+                + dateTimeOrNull(startTime) + ","
+                + dateTimeOrNull(endTime) + ",";
     }
 
 }

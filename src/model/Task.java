@@ -23,7 +23,7 @@ public class Task {
         this.status = status;
         this.duration = duration;
         this.startTime = startTime;
-        this.endTime = startTime.plus(duration);
+        this.endTime = (startTime != null ? startTime.plus(duration) : null);
     }
 
     public Task(int id, String title, String description, TaskStatus status) {
@@ -108,6 +108,11 @@ public class Task {
         this.endTime = endTime;
     }
 
+    public String dateTimeOrNull(LocalDateTime dateTime)
+    {
+        return dateTime != null ? dateTime.format(formatter) : "null";
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -123,8 +128,13 @@ public class Task {
 
     @Override
     public String toString() {
-        return id + "," + TaskType.TASK + "," + title + "," + status + "," + description + ","
-            + duration.toMinutes() + "," + startTime.format(formatter) + "," + endTime.format(formatter) + ",";
-
+        return id + ","
+                + TaskType.TASK + ","
+                + title + ","
+                + status + ","
+                + description + ","
+                + duration.toMinutes() + ","
+                + dateTimeOrNull(startTime) + ","
+                + dateTimeOrNull(endTime) + ",";
     }
 }

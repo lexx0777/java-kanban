@@ -6,6 +6,9 @@ import controllers.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryHistoryManagerTest {
@@ -24,7 +27,7 @@ class InMemoryHistoryManagerTest {
         Task task1 = new Task(1,"Убраться в комнате", "Протереть пыль и пр", TaskStatus.NEW);
         Epic epic1 = new Epic(2,"Сделать дипломную работу", "успеть за месяц");
         Subtask subtask1 = new Subtask(3,"Сделать дело1", "10 микродел",
-                TaskStatus.NEW, epic1.getId());
+                TaskStatus.NEW, epic1.getId(), Duration.ofHours(3), LocalDateTime.now());
         historyManager.add(task1);
         assertEquals(1, historyManager.getHistory().size());
         historyManager.add(task1);

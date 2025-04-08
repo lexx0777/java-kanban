@@ -1,5 +1,7 @@
 import model.*;
 import controllers.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class Main {
 
@@ -20,8 +22,8 @@ public class Main {
 
     static void test1_tasks() {
         taskManager.add(new Task(0, "Задача1", "Описание задачи1", TaskStatus.NEW));
-        taskManager.add(new Task(0, "Задача2", "Описание задачи2", TaskStatus.NEW));
-        taskManager.add(new Task(0, "Задача3", "Описание задачи3", TaskStatus.NEW));
+        taskManager.add(new Task(0, "Задача2", "Описание задачи2", TaskStatus.NEW, Duration.ofHours(3), LocalDateTime.now()));
+        taskManager.add(new Task(0, "Задача3", "Описание задачи3", TaskStatus.NEW, Duration.ofHours(3), LocalDateTime.now()));
         System.out.println(taskManager.getTasks());
 
         task  = taskManager.getTaskById(3);
@@ -37,10 +39,10 @@ public class Main {
         epic  = taskManager.getEpicById(6);
         System.out.println("getEpicById " + epic.toString());
 
-        subtask = new Subtask(0, "subtask3_1", "Описание subtask3_1", TaskStatus.DONE, epic.getId());
+        subtask = new Subtask(0, "subtask3_1", "Описание subtask3_1", TaskStatus.DONE, epic.getId(), Duration.ofHours(3), LocalDateTime.now().minusDays(20));
         taskManager.add(subtask);
 
-        taskManager.add(new Subtask(0, "subtask3_2", "Описание subtask3_2", TaskStatus.IN_PROGRESS, epic.getId()));
+        taskManager.add(new Subtask(0, "subtask3_2", "Описание subtask3_2", TaskStatus.IN_PROGRESS, epic.getId(), Duration.ofHours(3), LocalDateTime.now()));
         System.out.println(taskManager.getSubtasks().toString());
 
         subtask  = taskManager.getSubtaskById(8);

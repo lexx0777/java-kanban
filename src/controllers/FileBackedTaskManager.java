@@ -5,9 +5,13 @@ import exceptions.ManagerSaveException;
 import model.*;
 
 import java.io.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File file;
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
     public FileBackedTaskManager(String path) {
         this.file = new File(path);
@@ -99,24 +103,28 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     private void fromString(String line) {
-        String[] splitLine = line.split(","); //file format: id,type,name,status,description,epic
+        String[] splitLine = line.split(","); //file format: id,type,name,status,description,duration,startTime,endTime,epic
         int id = Integer.parseInt(splitLine[0]);
         TaskType type = TaskType.valueOf(splitLine[1]);
         String title = splitLine[2];
         TaskStatus status = TaskStatus.valueOf(splitLine[3]);
         String description = splitLine[4];
+        LocalDateTime startDateTime = null;
+        Duration duration = Duration.ofMinutes(Integer.parseInt(splitLine[5]));
+        if (!splitLine[6].equals("null"))
+            startDateTime = LocalDateTime.parse(splitLine[6],formatter);
         switch (type) {
             case TaskType.TASK: {
-                update(new Task(id, title, description, status));//add to MAP
+                update(new Task(id, title, description, status, duration, startDateTime));//add to MAP
                 break;
             }
             case TaskType.EPIC: {
-                update(new Epic(id, title, description));//add to MAP
+                update(new Epic(id, title, description, duration, startDateTime));//add to MAP
                 break;
             }
             case TaskType.SUBTASK: {
-                int epicId = Integer.parseInt(splitLine[5]);
-                update(new Subtask(id, title, description, status, epicId));//add to MAP
+                int epicId = Integer.parseInt(splitLine[8]);
+                update(new Subtask(id, title, description, status, epicId, duration, startDateTime));//add to MAP
                 break;
             }
         }
@@ -140,7 +148,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private void save() {
         try (FileWriter writer = new FileWriter(file)) {
-            String head = "id,type,name,status,description,epic\n";
+            String head = "id,type,name,status,description,duration,startTime,endTime,epic,\n";
             writer.write(head);
             for (Task task : getTasks()) {
                 writer.write(String.format("%s\n", task.toString()));
@@ -159,14 +167,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public static void main(String[] args) {
         System.out.println("Считываем данные:");
         FileBackedTaskManager taskManager = FileBackedTaskManager.loadFromFile(new File("resources/manager.csv"));
-/*
-        int i = 6;
+
+        int i = 7;
         Epic epic1 = new Epic(0, "Epic"+i, "Описание Epic"+i);
         taskManager.add(epic1);
-        taskManager.add(new Subtask(0, "subtask"+i+"_1", "Описание subtask"+i+"_1", TaskStatus.NEW, epic1.getId()));
-        taskManager.add(new Subtask(0, "subtask"+i+"_2", "Описание subtask"+i+"_2", TaskStatus.DONE, epic1.getId()));
-        taskManager.add(new Subtask(0, "subtask"+i+"_3", "Описание subtask"+i+"_3", TaskStatus.IN_PROGRESS, epic1.getId()));
-*/
+        taskManager.add(new Subtask(0, "subtask"+i+"_1", "Описание subtask"+i+"_1", TaskStatus.DONE, epic1.getId(), Duration.ofHours(3), LocalDateTime.now().minusDays(20)));
+        taskManager.add(new Subtask(0, "subtask"+i+"_2", "Описание subtask"+i+"_2", TaskStatus.DONE, epic1.getId(), Duration.ofMinutes(30), LocalDateTime.now().minusDays(21)));
+        taskManager.add(new Subtask(0, "subtask"+i+"_3", "Описание subtask"+i+"_3", TaskStatus.IN_PROGRESS, epic1.getId(), Duration.ofHours(1), LocalDateTime.now().minusDays(22)));
+
         System.out.println("Список задач:");
         for (Task task : taskManager.getTasks()) {
             System.out.println(task);
