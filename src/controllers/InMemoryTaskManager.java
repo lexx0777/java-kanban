@@ -23,12 +23,14 @@ public class InMemoryTaskManager  implements TaskManager {
     public void add(Task task) {
         task.setId(nextId++);
         tasks.put(task.getId(), task);
+        prioritizedTasks.add(task);
     }
 
     @Override
     public void add(Epic epic) {
         epic.setId(nextId++);
         epics.put(epic.getId(), epic);
+        prioritizedTasks.add(epic);
     }
 
     @Override
@@ -44,6 +46,7 @@ public class InMemoryTaskManager  implements TaskManager {
             subtasksIds.add(subtask.getId());
         }
         updEpicStatus(epics.get(subtask.getEpicId()));
+        prioritizedTasks.add(subtask);
         return true;
     }
 
@@ -70,6 +73,7 @@ public class InMemoryTaskManager  implements TaskManager {
             }
         }
         epic.setStatus(epicStatus);
+        updEpicTime(epic);
     }
 
     @Override
@@ -107,12 +111,16 @@ public class InMemoryTaskManager  implements TaskManager {
     @Override
     public void update(Task task) {
         tasks.put(task.getId(), task);
+        prioritizedTasks.remove(task);
+        prioritizedTasks.add(task);
     }
 
     @Override
     public void update(Epic epic) {
         epics.put(epic.getId(), epic);
         updEpicStatus(epics.get(epic.getId()));
+        prioritizedTasks.remove(epic);
+        prioritizedTasks.add(epic);
     }
 
     @Override
@@ -124,15 +132,23 @@ public class InMemoryTaskManager  implements TaskManager {
             subtasksIds.add(subtask.getId());
         }
         updEpicStatus(epicA);
+        prioritizedTasks.remove(subtask);
+        prioritizedTasks.add(subtask);
     }
 
     @Override
     public void removeAllTasks() {
+        tasks.values().forEach(prioritizedTasks::remove);
+        tasks.keySet().forEach(historyManager::remove);
         tasks.clear();
     }
 
     @Override
     public void removeAllEpics() {
+        subtasks.values().forEach(prioritizedTasks::remove);
+        subtasks.keySet().forEach(historyManager::remove);
+        epics.values().forEach(prioritizedTasks::remove);
+        epics.keySet().forEach(historyManager::remove);
         epics.clear();
         subtasks.clear();
     }
@@ -143,6 +159,8 @@ public class InMemoryTaskManager  implements TaskManager {
             epic.cleanSubtasksIds();
             updEpicStatus(epic);
         }
+        subtasks.values().forEach(prioritizedTasks::remove);
+        subtasks.keySet().forEach(historyManager::remove);
         subtasks.clear();
     }
 

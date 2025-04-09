@@ -128,8 +128,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 break;
             }
         }
-        if (getNextId() < id)
-            setNextId(id);
+        if (getNextId() <= id)
+            setNextId(id+1);
     }
 
     public static FileBackedTaskManager loadFromFile(File file) {
@@ -167,13 +167,23 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public static void main(String[] args) {
         System.out.println("Считываем данные:");
         FileBackedTaskManager taskManager = FileBackedTaskManager.loadFromFile(new File("resources/manager.csv"));
-
+/*
+        taskManager.add(new Task(0, "Task"+1, "Описание Task"+1, TaskStatus.IN_PROGRESS, Duration.ofHours(1), LocalDateTime.now().minusDays(23)));
+        taskManager.add(new Task(0, "Task"+2, "Описание Task"+2, TaskStatus.IN_PROGRESS, Duration.ofHours(10), LocalDateTime.now().minusDays(2)));
+*/
+/*
         int i = 7;
         Epic epic1 = new Epic(0, "Epic"+i, "Описание Epic"+i);
         taskManager.add(epic1);
         taskManager.add(new Subtask(0, "subtask"+i+"_1", "Описание subtask"+i+"_1", TaskStatus.DONE, epic1.getId(), Duration.ofHours(3), LocalDateTime.now().minusDays(20)));
         taskManager.add(new Subtask(0, "subtask"+i+"_2", "Описание subtask"+i+"_2", TaskStatus.DONE, epic1.getId(), Duration.ofMinutes(30), LocalDateTime.now().minusDays(21)));
         taskManager.add(new Subtask(0, "subtask"+i+"_3", "Описание subtask"+i+"_3", TaskStatus.IN_PROGRESS, epic1.getId(), Duration.ofHours(1), LocalDateTime.now().minusDays(22)));
+*/
+
+        System.out.println("PrioritizedTasks:");
+        for (Task task : taskManager.getPrioritizedTasks()) {
+            System.out.println(task);
+        }
 
         System.out.println("Список задач:");
         for (Task task : taskManager.getTasks()) {
