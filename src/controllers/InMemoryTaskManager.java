@@ -187,6 +187,7 @@ public class InMemoryTaskManager  implements TaskManager {
 
     @Override
     public void removeTaskById(int id) {
+        prioritizedTasks.remove(getTaskById(id));
         tasks.remove(id);
     }
 
@@ -198,6 +199,7 @@ public class InMemoryTaskManager  implements TaskManager {
         for (int subtaskId: epic.getSubtasksIds()) {
             subtasks.remove(subtaskId);
         }
+        prioritizedTasks.remove(getEpicById(id));
         epics.remove(id);
         return true;
     }
@@ -206,6 +208,7 @@ public class InMemoryTaskManager  implements TaskManager {
     public void removeSubtaskById(int id) {
         Epic epicA  = epics.get(subtasks.get(id).getEpicId());
         epicA.removeSubtaskId(id);
+        prioritizedTasks.remove(getSubtaskById(id));
         subtasks.remove(id);
         this.updEpicStatus(epicA);
     }
@@ -262,23 +265,28 @@ public class InMemoryTaskManager  implements TaskManager {
                 .collect(Collectors.toCollection(() -> new TreeSet<>(comparator)));
     }
 
-    private boolean isValidate(Task task) {
+    private boolean isValidateDateTime(Task task) {
         return prioritizedTasks.stream()
                 .anyMatch(t -> t.getStartTime().isBefore(task.getEndTime())
                         && task.getStartTime().isBefore(t.getEndTime()));
     }
 
+    /*
     private boolean checkIntersectionTaskTime(Task task) {
-        if (!Objects.nonNull(task.getStartTime()) && !Objects.nonNull(task.getEndTime())) {
+        if (!Objects.nonNull(task.getStartTime())
+                && !Objects.nonNull(task.getEndTime())) {
             return false;
         } else {
             List<Task> intersectionsTasks = getPrioritizedTasks().stream().filter(prioritezedTask ->
                             Objects.nonNull(prioritezedTask.getEndTime()))
-                    .filter(prioritizedTask -> (prioritizedTask.getStartTime().isBefore(task.getStartTime()) &&
-                            prioritizedTask.getEndTime().isAfter(task.getStartTime())) //||
-                            //(prioritizedTask.getStartTime().equals(task.getStartTime()) && prioritizedTask.getEndTime().equals(task.getEndTime())))
+                    .filter(prioritizedTask -> (prioritizedTask.getStartTime().isBefore(task.getStartTime())
+                            && prioritizedTask.getEndTime().isAfter(task.getStartTime())
+                            //|| (prioritizedTask.getStartTime().equals(task.getStartTime())
+                            //        && prioritizedTask.getEndTime().equals(task.getEndTime()))
+                            )
                     ).toList();
             return !intersectionsTasks.isEmpty();
         }
     }
+    */
 }

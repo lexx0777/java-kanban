@@ -1,6 +1,5 @@
 package controllersTest;
 
-//import model.*;
 import controllers.*;
 
 import org.junit.jupiter.api.Test;
