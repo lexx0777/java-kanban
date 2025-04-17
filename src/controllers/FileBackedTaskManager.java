@@ -2,6 +2,7 @@ package controllers;
 
 import exceptions.ManagerLoadException;
 import exceptions.ManagerSaveException;
+import exceptions.TaskSaveDateTimeException;
 import model.*;
 
 import java.io.*;
@@ -26,20 +27,20 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void add(Task task) {
+    public void add(Task task) throws TaskSaveDateTimeException {
         super.add(task);
         save();
     }
 
     @Override
-    public boolean add(Subtask subtask) {
+    public boolean add(Subtask subtask) throws TaskSaveDateTimeException {
         boolean ret  = super.add(subtask);
         save();
         return ret;
     }
 
     @Override
-    public void add(Epic epic) {
+    public void add(Epic epic) throws TaskSaveDateTimeException {
         super.add(epic);
         save();
     }
@@ -164,13 +165,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws TaskSaveDateTimeException {
         System.out.println("Считываем данные:");
         FileBackedTaskManager taskManager = FileBackedTaskManager.loadFromFile(new File("resources/manager.csv"));
-/*
-        taskManager.add(new Task(0, "Task"+1, "Описание Task"+1, TaskStatus.IN_PROGRESS, Duration.ofHours(1), LocalDateTime.now().minusDays(23)));
-        taskManager.add(new Task(0, "Task"+2, "Описание Task"+2, TaskStatus.IN_PROGRESS, Duration.ofHours(10), LocalDateTime.now().minusDays(2)));
-*/
+
+        //taskManager.add(new Task(0, "Task"+3, "Описание Task"+3, TaskStatus.IN_PROGRESS, Duration.ofHours(1), LocalDateTime.now()));
+        taskManager.add(new Task(0, "Task"+4, "Описание Task"+4, TaskStatus.IN_PROGRESS, Duration.ofHours(10), LocalDateTime.now().plusMinutes(10)));
+
 /*
         int i = 7;
         Epic epic1 = new Epic(0, "Epic"+i, "Описание Epic"+i);

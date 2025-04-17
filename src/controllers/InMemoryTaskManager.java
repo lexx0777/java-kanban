@@ -1,5 +1,6 @@
 package controllers;
 
+import exceptions.TaskSaveDateTimeException;
 import model.*;
 
 import java.time.Duration;
@@ -7,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class InMemoryTaskManager  implements TaskManager {
+public class InMemoryTaskManager  implements TaskManager{
     private final HashMap<Integer, Task> tasks = new HashMap<>();
     private final HashMap<Integer, Epic> epics = new HashMap<>();
     private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
@@ -20,33 +21,49 @@ public class InMemoryTaskManager  implements TaskManager {
     private final TreeSet<Task> prioritizedTasks = new TreeSet<>(comparator);
 
     @Override
-    public void add(Task task) {
-        task.setId(nextId++);
-        tasks.put(task.getId(), task);
-        prioritizedTasks.add(task);
-    }
-
-    @Override
-    public void add(Epic epic) {
-        epic.setId(nextId++);
-        epics.put(epic.getId(), epic);
-        prioritizedTasks.add(epic);
-    }
-
-    @Override
-    public boolean add(Subtask subtask) {
-        subtask.setId(nextId++);
-        subtasks.put(subtask.getId(), subtask);
-        Epic epicA = epics.get(subtask.getEpicId());
-        if (epicA == null)
-            return  false;
-        ArrayList<Integer> subtasksIds = epicA.getSubtasksIds();
-
-        if (!subtasksIds.contains(subtask.getId())) {
-            subtasksIds.add(subtask.getId());
+    public void add(Task task) throws TaskSaveDateTimeException {
+        if (isValidateDateTime(task)) {
+            //System.out.println("Задача пересекается по времени с другими");
+            throw new TaskSaveDateTimeException(task);
+        } else {
+            task.setId(nextId++);
+            tasks.put(task.getId(), task);
+            prioritizedTasks.add(task);
         }
-        updEpicStatus(epics.get(subtask.getEpicId()));
-        prioritizedTasks.add(subtask);
+    }
+
+    @Override
+    public void add(Epic epic) throws TaskSaveDateTimeException {
+        if (isValidateDateTime(epic)) {
+            //System.out.println("Подзадача пересекается по времени с другими");
+            throw new TaskSaveDateTimeException(epic);
+        } else {
+            epic.setId(nextId++);
+            epics.put(epic.getId(), epic);
+            prioritizedTasks.add(epic);
+        }
+    }
+
+    @Override
+    public boolean add(Subtask subtask) throws TaskSaveDateTimeException {
+        if (isValidateDateTime(subtask)) {
+            //System.out.println("Подзадача пересекается по времени с другими");
+            throw new TaskSaveDateTimeException(subtask);
+        } else {
+            subtask.setId(nextId++);
+
+            subtasks.put(subtask.getId(), subtask);
+            Epic epicA = epics.get(subtask.getEpicId());
+            if (epicA == null)
+                return false;
+            ArrayList<Integer> subtasksIds = epicA.getSubtasksIds();
+
+            if (!subtasksIds.contains(subtask.getId())) {
+                subtasksIds.add(subtask.getId());
+            }
+            updEpicStatus(epics.get(subtask.getEpicId()));
+            prioritizedTasks.add(subtask);
+        }
         return true;
     }
 
@@ -233,14 +250,6 @@ public class InMemoryTaskManager  implements TaskManager {
         if (subtasks.isEmpty()) return new ArrayList<>();
         Epic   epic = epics.get(epicId);
         if (epic.getSubtasksIds().isEmpty()) return new ArrayList<>();
-        /*
-        ArrayList<Subtask> ret = new ArrayList<>();
-
-        for (Integer subtasksId : epic.getSubtasksIds()) {
-            Subtask subtask = subtasks.get(subtasksId);
-            ret.add(subtask);
-        }
-        return ret;*/
         return epic.getSubtasksIds().stream().map(subtasks::get).collect(Collectors.toCollection(ArrayList::new));
     }
 
@@ -271,22 +280,4 @@ public class InMemoryTaskManager  implements TaskManager {
                         && task.getStartTime().isBefore(t.getEndTime()));
     }
 
-    /*
-    private boolean checkIntersectionTaskTime(Task task) {
-        if (!Objects.nonNull(task.getStartTime())
-                && !Objects.nonNull(task.getEndTime())) {
-            return false;
-        } else {
-            List<Task> intersectionsTasks = getPrioritizedTasks().stream().filter(prioritezedTask ->
-                            Objects.nonNull(prioritezedTask.getEndTime()))
-                    .filter(prioritizedTask -> (prioritizedTask.getStartTime().isBefore(task.getStartTime())
-                            && prioritizedTask.getEndTime().isAfter(task.getStartTime())
-                            //|| (prioritizedTask.getStartTime().equals(task.getStartTime())
-                            //        && prioritizedTask.getEndTime().equals(task.getEndTime()))
-                            )
-                    ).toList();
-            return !intersectionsTasks.isEmpty();
-        }
-    }
-    */
 }

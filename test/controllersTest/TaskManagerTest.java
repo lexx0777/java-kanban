@@ -1,6 +1,7 @@
 package controllersTest;
 
 import controllers.TaskManager;
+import exceptions.TaskSaveDateTimeException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import model.Epic;
@@ -39,7 +40,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void shouldAddTask() {
+    public void shouldAddTask() throws TaskSaveDateTimeException {
         Task task = addTask();
         task.setId(1);
         taskManager.add(task);
@@ -48,7 +49,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void shouldAddEpic() {
+    public void shouldAddEpic() throws TaskSaveDateTimeException {
         Epic epic = addEpic();
         taskManager.add(epic);
         assertEquals(epic, taskManager.getEpicById(epic.getId()));
@@ -56,7 +57,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void shouldAddSubtask() {
+    public void shouldAddSubtask() throws TaskSaveDateTimeException {
         Epic epic = addEpic();
         taskManager.add(epic);
         Subtask subtask = addSubtask(epic);
@@ -67,7 +68,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void shouldUpdateTask() {
+    public void shouldUpdateTask() throws TaskSaveDateTimeException {
         Task task = addTask();
         taskManager.add(task);
         taskManager.getTaskById(task.getId()).setStatus(TaskStatus.DONE);
@@ -77,7 +78,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void shouldUpdateEpic() {
+    public void shouldUpdateEpic() throws TaskSaveDateTimeException {
         Epic epic = addEpic();
         taskManager.add(epic);
         taskManager.getEpicById(epic.getId()).setStatus(TaskStatus.DONE);
@@ -87,7 +88,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void ShouldUpdateSubtask() {
+    public void ShouldUpdateSubtask() throws TaskSaveDateTimeException {
         Epic epic = addEpic();
         taskManager.add(epic);
         Subtask subtask = addSubtask(epic);
@@ -99,7 +100,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void shouldGetTaskById() {
+    public void shouldGetTaskById() throws TaskSaveDateTimeException {
         Task task = addTask();
         taskManager.add(task);
         Task savedTask = taskManager.getTaskById(task.getId());
@@ -108,7 +109,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void shouldGetEpicById() {
+    public void shouldGetEpicById() throws TaskSaveDateTimeException {
         Epic epic = addEpic();
         taskManager.add(epic);
         Epic savedEpic = taskManager.getEpicById(epic.getId());
@@ -117,7 +118,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void shouldGetSubtaskById() {
+    public void shouldGetSubtaskById() throws TaskSaveDateTimeException {
         Epic epic = addEpic();
         taskManager.add(epic);
         Subtask subtask = addSubtask(epic);
@@ -128,7 +129,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void shouldGetAllTasks() {
+    public void shouldGetAllTasks() throws TaskSaveDateTimeException {
         Task task = addTask();
         Task task2 = new Task(2,"Task2", "Task description2", TaskStatus.NEW, Duration.ofMinutes(30), LocalDateTime.now().plus(Duration.ofMinutes(30)));
         taskManager.add(task);
@@ -139,7 +140,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void shouldGetAllEpics() {
+    public void shouldGetAllEpics() throws TaskSaveDateTimeException {
         Epic epic = addEpic();
         Epic epic2 = new Epic(11,"Epic2", "Epic description2");
         taskManager.add(epic);
@@ -150,7 +151,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void shouldGetAllSubtasks() {
+    public void shouldGetAllSubtasks() throws TaskSaveDateTimeException {
         Epic epic = addEpic();
         taskManager.add(epic);
         Subtask subtask = addSubtask(epic);
@@ -164,7 +165,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void shouldRemoveTaskById() {
+    public void shouldRemoveTaskById() throws TaskSaveDateTimeException {
         Task task = addTask();
         taskManager.add(task);
         taskManager.removeTaskById(task.getId());
@@ -172,7 +173,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void shouldRemoveEpicById() {
+    public void shouldRemoveEpicById() throws TaskSaveDateTimeException {
         Epic epic = addEpic();
         taskManager.add(epic);
         taskManager.removeEpicById(epic.getId());
@@ -180,7 +181,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void shouldRemoveSubtaskById() {
+    public void shouldRemoveSubtaskById() throws TaskSaveDateTimeException {
         Epic epic = addEpic();
         taskManager.add(epic);
         Subtask subtask = addSubtask(epic);
@@ -190,7 +191,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void shouldRemoveAllTasks() {
+    public void shouldRemoveAllTasks() throws TaskSaveDateTimeException {
         Task task = addTask();
         Task task2 = new Task(2,"Task2", "Task description2", TaskStatus.NEW,
                 Duration.ofMinutes(30), LocalDateTime.now().plus(Duration.ofMinutes(30)));
@@ -201,7 +202,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void shouldRemoveAllEpics() {
+    public void shouldRemoveAllEpics() throws TaskSaveDateTimeException {
         Epic epic = addEpic();
         Epic epic2 = new Epic(11,"Epic2", "Epic description2");
         Subtask subtask = addSubtask(epic);
@@ -214,7 +215,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void shouldRemoveAllSubtasks() {
+    public void shouldRemoveAllSubtasks() throws TaskSaveDateTimeException {
         Epic epic = addEpic();
         taskManager.add(epic);
         Subtask subtask = addSubtask(epic);
@@ -227,7 +228,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    public void shouldGetSubtasksForEpic() {
+    public void shouldGetSubtasksForEpic() throws TaskSaveDateTimeException {
         Epic epic = addEpic();
         taskManager.add(epic);
         Subtask subtask = addSubtask(epic);

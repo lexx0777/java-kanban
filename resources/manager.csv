@@ -1,6 +1,7 @@
 id,type,name,status,description,duration,startTime,endTime,epic,
 13,TASK,Task1,IN_PROGRESS,Описание Task1,60,16.01.2025 19:30,16.01.2025 20:30,
 14,TASK,Task2,NEW,Описание Task2,600,06.05.2025 10:10,06.05.2025 20:10,
+15,TASK,Task3,IN_PROGRESS,Описание Task3,60,17.04.2025 17:30,17.04.2025 18:30,
 1,EPIC,Epic1,IN_PROGRESS,Описание Epic1,270,17.02.2025 17:00,19.02.2025 19:00,
 5,EPIC,Epic5,NEW,Описание Epic5,10,17.01.2025 15:27,19.01.2025 15:28,
 9,EPIC,Epic9,DONE,Описание Epic9,270,18.03.2025 00:01,18.03.2025 03:01,

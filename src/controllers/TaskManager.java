@@ -1,16 +1,17 @@
 package controllers;
 
+import exceptions.TaskSaveDateTimeException;
 import model.*;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
 public interface TaskManager {
 
-    void add(Task task);
+    void add(Task task) throws TaskSaveDateTimeException;
 
-    void add(Epic epic);
+    void add(Epic epic) throws TaskSaveDateTimeException;
 
-    boolean add(Subtask subtask);
+    boolean add(Subtask subtask) throws TaskSaveDateTimeException;
 
     void updEpicStatus(Epic epic);
 
