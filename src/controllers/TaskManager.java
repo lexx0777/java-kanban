@@ -2,6 +2,7 @@ package controllers;
 
 import model.*;
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 public interface TaskManager {
 
@@ -12,6 +13,8 @@ public interface TaskManager {
     boolean add(Subtask subtask);
 
     void updEpicStatus(Epic epic);
+
+    void updEpicTime(Epic epic);
 
     void update(Task task);
 
@@ -50,4 +53,6 @@ public interface TaskManager {
     int getNextId();
 
     void setNextId(int newNextId);
+
+    TreeSet<Task> getPrioritizedTasks();
 }

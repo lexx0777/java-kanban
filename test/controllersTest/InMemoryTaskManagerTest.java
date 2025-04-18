@@ -1,11 +1,14 @@
 package controllersTest;
 
+import exceptions.TaskSaveDateTimeException;
 import model.*;
 import controllers.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,10 +24,10 @@ class InMemoryTaskManagerTest {
     @BeforeEach
     void setUp() {
         taskManager = Managers.getDefault();
-        task1 = new Task(1, "убраться в комнате", "пыль и пр " , TaskStatus.NEW);
-        task2 = new Task(2, "Сходить в маг", "купить броколи", TaskStatus.NEW);
-        epic1 = new Epic(3, "Дело", "неск подходов");
-        epic2 = new Epic(4, "Сделать тз", "успеть");
+        task1 = new Task(1, "убраться в комнате", "пыль и пр " , TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.now());
+        task2 = new Task(2, "Сходить в маг", "купить броколи", TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.now().plusDays(1));
+        epic1 = new Epic(3, "Дело", "неск подходов", Duration.ofHours(1), LocalDateTime.now().plusDays(2));
+        epic2 = new Epic(4, "Сделать тз", "успеть", Duration.ofHours(1), LocalDateTime.now().plusDays(3));
 
     }
 
@@ -51,7 +54,7 @@ class InMemoryTaskManagerTest {
     void shouldUpdateTaskToNewTask() {
         taskManager.add(task1);
         Task updateTask1 = new Task(1,"Не забыть убраться в комнате", "Можно без влажной уборки",
-                TaskStatus.IN_PROGRESS);
+                TaskStatus.IN_PROGRESS, Duration.ofHours(1), LocalDateTime.now().plusDays(5));
         taskManager.update(updateTask1);
         List<Task> tasks = taskManager.getTasks();
         assertNotNull(tasks);
@@ -117,9 +120,9 @@ class InMemoryTaskManagerTest {
         taskManager.add(epic1);
         taskManager.add(epic2);
         Subtask subtask1 = new Subtask(5,"Сделать презентацию", "12 слайдов",
-                TaskStatus.NEW, epic1.getId());
+                TaskStatus.NEW, epic1.getId(), Duration.ofHours(3), LocalDateTime.now());
         Subtask subtask2 = new Subtask(6,"Подготовить речь", "На 5-7 минут выступления",
-                TaskStatus.NEW, epic1.getId());
+                TaskStatus.NEW, epic1.getId(), Duration.ofHours(3), LocalDateTime.now().plusDays(1));
         taskManager.add(subtask1);
         taskManager.add(subtask2);
         taskManager.removeAllEpics();
@@ -134,9 +137,9 @@ class InMemoryTaskManagerTest {
         taskManager.add(epic1);
         taskManager.add(epic2);
         Subtask subtask1 = new Subtask(5,"Сделать презентацию", "12 слайдов",
-                TaskStatus.NEW, epic1.getId());
+                TaskStatus.NEW, epic1.getId(), Duration.ofHours(3), LocalDateTime.now().plusDays(5));
         Subtask subtask2 = new Subtask(6,"Подготовить речь", "На 5-7 минут выступления",
-                TaskStatus.NEW, epic1.getId());
+                TaskStatus.NEW, epic1.getId(), Duration.ofHours(3), LocalDateTime.now().minusDays(1));
         taskManager.add(subtask1);
         taskManager.add(subtask2);
         taskManager.removeEpicById(epic1.getId());
@@ -150,7 +153,7 @@ class InMemoryTaskManagerTest {
     void shouldAddAndGetNewSubtasks() {
         taskManager.add(epic1);
         Subtask subtask1 = new Subtask(5,"Сделать презентацию", "12 слайдов",
-                TaskStatus.NEW, epic1.getId());
+                TaskStatus.NEW, epic1.getId(), Duration.ofHours(3), LocalDateTime.now().plusDays(6));
         taskManager.add(subtask1);
         Subtask subtask = taskManager.getSubtaskById(subtask1.getId());
         assertNotNull(subtask1);
@@ -161,9 +164,9 @@ class InMemoryTaskManagerTest {
     void shouldGetAllSubtasks() {
         taskManager.add(epic1);
         Subtask subtask1 = new Subtask(epic1.getId(),"Сделать презентацию", "12 слайдов",
-                TaskStatus.NEW, epic1.getId());
+                TaskStatus.NEW, epic1.getId(), Duration.ofHours(3), LocalDateTime.now().plusDays(1));
         Subtask subtask2 = new Subtask(epic1.getId(),"Подготовить речь", "На 5-7 минут выступления",
-                TaskStatus.NEW, epic1.getId());
+                TaskStatus.NEW, epic1.getId(), Duration.ofHours(3), LocalDateTime.now().plusDays(4));
         taskManager.add(subtask1);
         taskManager.add(subtask2);
         List<Subtask> subtasks = taskManager.getSubtasks();
@@ -177,14 +180,14 @@ class InMemoryTaskManagerTest {
     void shouldUpdateSubtaskShouldChangeEpicStatus() {
         taskManager.add(epic1);
         Subtask subtask1 = new Subtask(5,"Сделать презентацию", "небольшую",
-                TaskStatus.IN_PROGRESS, epic1.getId());
+                TaskStatus.IN_PROGRESS, epic1.getId(), Duration.ofHours(3), LocalDateTime.now().plusDays(5));
         Subtask subtask2 = new Subtask(6,"написать речь", "краткую",
-                TaskStatus.DONE, epic1.getId());
+                TaskStatus.DONE, epic1.getId(), Duration.ofHours(3), LocalDateTime.now().plusDays(6));
         taskManager.add(subtask1);
         taskManager.add(subtask2);
         TaskStatus epic1Status = epic1.getStatus();
         Subtask subtask3 = new Subtask(7,"Погладить шнурки", "аккуратно",
-                TaskStatus.IN_PROGRESS, epic1.getId());
+                TaskStatus.IN_PROGRESS, epic1.getId(), Duration.ofHours(3), LocalDateTime.now().plusDays(8));
         taskManager.update(subtask3);
         TaskStatus actualEpicStatus = epic1.getStatus();
         assertEquals(epic1Status, actualEpicStatus);
@@ -194,9 +197,9 @@ class InMemoryTaskManagerTest {
     void shouldRemoveSubtaskByIdAlsoShouldChangeEpicStatus() {
         taskManager.add(epic1);
         Subtask subtask1 = new Subtask(5,"Сделать презентацию", "12 слайдов",
-                TaskStatus.NEW, epic1.getId());
+                TaskStatus.NEW, epic1.getId(), Duration.ofHours(3), LocalDateTime.now().plusDays(5));
         Subtask subtask2 = new Subtask(6,"Подготовить речь", "На 5-7 минут выступления",
-                TaskStatus.DONE, epic1.getId());
+                TaskStatus.DONE, epic1.getId(), Duration.ofHours(3), LocalDateTime.now().plusDays(6));
         taskManager.add(subtask1);
         taskManager.add(subtask2);
         TaskStatus epic1Status = epic1.getStatus();
