@@ -27,20 +27,20 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void add(Task task) throws TaskSaveDateTimeException {
+    public void add(Task task) {
         super.add(task);
         save();
     }
 
     @Override
-    public boolean add(Subtask subtask) throws TaskSaveDateTimeException {
+    public boolean add(Subtask subtask) {
         boolean ret  = super.add(subtask);
         save();
         return ret;
     }
 
     @Override
-    public void add(Epic epic) throws TaskSaveDateTimeException {
+    public void add(Epic epic) {
         super.add(epic);
         save();
     }
@@ -165,7 +165,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
     }
 
-    public static void main(String[] args) throws TaskSaveDateTimeException {
+    public static void main(String[] args) {
         System.out.println("Считываем данные:");
         FileBackedTaskManager taskManager = FileBackedTaskManager.loadFromFile(new File("resources/manager.csv"));
 

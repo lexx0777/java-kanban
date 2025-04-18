@@ -21,7 +21,7 @@ public class InMemoryTaskManager  implements TaskManager {
     private final TreeSet<Task> prioritizedTasks = new TreeSet<>(comparator);
 
     @Override
-    public void add(Task task) throws TaskSaveDateTimeException {
+    public void add(Task task) {
         if (isValidateDateTime(task)) {
             //System.out.println("Задача пересекается по времени с другими");
             throw new TaskSaveDateTimeException(task);
@@ -33,19 +33,18 @@ public class InMemoryTaskManager  implements TaskManager {
     }
 
     @Override
-    public void add(Epic epic) throws TaskSaveDateTimeException {
+    public void add(Epic epic) {
         if (isValidateDateTime(epic)) {
             //System.out.println("Подзадача пересекается по времени с другими");
             throw new TaskSaveDateTimeException(epic);
         } else {
             epic.setId(nextId++);
             epics.put(epic.getId(), epic);
-            prioritizedTasks.add(epic);
         }
     }
 
     @Override
-    public boolean add(Subtask subtask) throws TaskSaveDateTimeException {
+    public boolean add(Subtask subtask) {
         if (isValidateDateTime(subtask)) {
             //System.out.println("Подзадача пересекается по времени с другими");
             throw new TaskSaveDateTimeException(subtask);
@@ -127,30 +126,38 @@ public class InMemoryTaskManager  implements TaskManager {
 
     @Override
     public void update(Task task) {
-        tasks.put(task.getId(), task);
         prioritizedTasks.remove(task);
-        prioritizedTasks.add(task);
+        if (isValidateDateTime(task)) {
+            //System.out.println("Задача пересекается по времени с другими");
+            throw new TaskSaveDateTimeException(task);
+        } else {
+            tasks.put(task.getId(), task);
+            prioritizedTasks.add(task);
+        }
     }
 
     @Override
     public void update(Epic epic) {
         epics.put(epic.getId(), epic);
         updEpicStatus(epics.get(epic.getId()));
-        prioritizedTasks.remove(epic);
-        prioritizedTasks.add(epic);
     }
 
     @Override
     public void update(Subtask subtask) {
-        subtasks.put(subtask.getId(), subtask);
-        Epic epicA = epics.get(subtask.getEpicId());
-        ArrayList<Integer> subtasksIds = epicA.getSubtasksIds();
-        if (!subtasksIds.contains(subtask.getId())) {
-            subtasksIds.add(subtask.getId());
-        }
-        updEpicStatus(epicA);
         prioritizedTasks.remove(subtask);
-        prioritizedTasks.add(subtask);
+        if (isValidateDateTime(subtask)) {
+            //System.out.println("Задача пересекается по времени с другими");
+            throw new TaskSaveDateTimeException(subtask);
+        } else {
+            subtasks.put(subtask.getId(), subtask);
+            Epic epicA = epics.get(subtask.getEpicId());
+            ArrayList<Integer> subtasksIds = epicA.getSubtasksIds();
+            if (!subtasksIds.contains(subtask.getId())) {
+                subtasksIds.add(subtask.getId());
+            }
+            updEpicStatus(epicA);
+            prioritizedTasks.add(subtask);
+        }
     }
 
     @Override
@@ -162,9 +169,6 @@ public class InMemoryTaskManager  implements TaskManager {
 
     @Override
     public void removeAllEpics() {
-        subtasks.values().forEach(prioritizedTasks::remove);
-        subtasks.keySet().forEach(historyManager::remove);
-        epics.values().forEach(prioritizedTasks::remove);
         epics.keySet().forEach(historyManager::remove);
         epics.clear();
         subtasks.clear();
@@ -205,6 +209,7 @@ public class InMemoryTaskManager  implements TaskManager {
     @Override
     public void removeTaskById(int id) {
         prioritizedTasks.remove(getTaskById(id));
+        historyManager.remove(id);
         tasks.remove(id);
     }
 
@@ -226,6 +231,7 @@ public class InMemoryTaskManager  implements TaskManager {
         Epic epicA  = epics.get(subtasks.get(id).getEpicId());
         epicA.removeSubtaskId(id);
         prioritizedTasks.remove(getSubtaskById(id));
+        historyManager.remove(id);
         subtasks.remove(id);
         this.updEpicStatus(epicA);
     }

@@ -32,7 +32,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void shouldAddAndGetNewTasks() throws TaskSaveDateTimeException {
+    void shouldAddAndGetNewTasks() {
         taskManager.add(task1);
         Task task = taskManager.getTaskById(task1.getId());
         assertNotNull(task);
@@ -40,7 +40,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void shouldGetAllTasks() throws TaskSaveDateTimeException {
+    void shouldGetAllTasks() {
         taskManager.add(task1);
         taskManager.add(task2);
         List<Task> tasks = taskManager.getTasks();
@@ -51,7 +51,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void shouldUpdateTaskToNewTask() throws TaskSaveDateTimeException {
+    void shouldUpdateTaskToNewTask() {
         taskManager.add(task1);
         Task updateTask1 = new Task(1,"Не забыть убраться в комнате", "Можно без влажной уборки",
                 TaskStatus.IN_PROGRESS, Duration.ofHours(1), LocalDateTime.now().plusDays(5));
@@ -64,7 +64,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void shouldRemoveAllTasks() throws TaskSaveDateTimeException {
+    void shouldRemoveAllTasks() {
         taskManager.add(task1);
         taskManager.add(task2);
         taskManager.removeAllTasks();
@@ -73,7 +73,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void shouldRemoveTaskById() throws TaskSaveDateTimeException {
+    void shouldRemoveTaskById() {
         taskManager.add(task1);
         taskManager.add(task2);
         taskManager.removeTaskById(task1.getId());
@@ -83,7 +83,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void shouldAddAndGetNewEpics() throws TaskSaveDateTimeException {
+    void shouldAddAndGetNewEpics() {
         taskManager.add(epic1);
         Epic epic = taskManager.getEpicById(epic1.getId());
         assertNotNull(epic);
@@ -93,7 +93,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void shouldGetAllEpics() throws TaskSaveDateTimeException {
+    void shouldGetAllEpics() {
         taskManager.add(epic1);
         taskManager.add(epic2);
         List<Epic> epics = taskManager.getEpics();
@@ -104,7 +104,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void shouldUpdateEpicToNewEpic() throws TaskSaveDateTimeException {
+    void shouldUpdateEpicToNewEpic() {
         taskManager.add(epic1);
         Epic updateEpic1 = new Epic(1,"Съездить в отпуск в июне", "В приоритете в Германию, попить нормального пива");
         taskManager.update(updateEpic1);
@@ -116,7 +116,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void shouldRemoveAllEpicsAlsoShouldRemoveAllSubtasks() throws TaskSaveDateTimeException {
+    void shouldRemoveAllEpicsAlsoShouldRemoveAllSubtasks() {
         taskManager.add(epic1);
         taskManager.add(epic2);
         Subtask subtask1 = new Subtask(5,"Сделать презентацию", "12 слайдов",
@@ -133,7 +133,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void shouldRemoveEpicByIdAlsoShouldRemoveAllSubtasks() throws TaskSaveDateTimeException {
+    void shouldRemoveEpicByIdAlsoShouldRemoveAllSubtasks() {
         taskManager.add(epic1);
         taskManager.add(epic2);
         Subtask subtask1 = new Subtask(5,"Сделать презентацию", "12 слайдов",
@@ -150,7 +150,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void shouldAddAndGetNewSubtasks() throws TaskSaveDateTimeException {
+    void shouldAddAndGetNewSubtasks() {
         taskManager.add(epic1);
         Subtask subtask1 = new Subtask(5,"Сделать презентацию", "12 слайдов",
                 TaskStatus.NEW, epic1.getId(), Duration.ofHours(3), LocalDateTime.now().plusDays(6));
@@ -161,7 +161,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void shouldGetAllSubtasks() throws TaskSaveDateTimeException {
+    void shouldGetAllSubtasks() {
         taskManager.add(epic1);
         Subtask subtask1 = new Subtask(epic1.getId(),"Сделать презентацию", "12 слайдов",
                 TaskStatus.NEW, epic1.getId(), Duration.ofHours(3), LocalDateTime.now().plusDays(1));
@@ -177,7 +177,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void shouldUpdateSubtaskShouldChangeEpicStatus() throws TaskSaveDateTimeException {
+    void shouldUpdateSubtaskShouldChangeEpicStatus() {
         taskManager.add(epic1);
         Subtask subtask1 = new Subtask(5,"Сделать презентацию", "небольшую",
                 TaskStatus.IN_PROGRESS, epic1.getId(), Duration.ofHours(3), LocalDateTime.now().plusDays(5));
@@ -194,7 +194,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void shouldRemoveSubtaskByIdAlsoShouldChangeEpicStatus() throws TaskSaveDateTimeException {
+    void shouldRemoveSubtaskByIdAlsoShouldChangeEpicStatus() {
         taskManager.add(epic1);
         Subtask subtask1 = new Subtask(5,"Сделать презентацию", "12 слайдов",
                 TaskStatus.NEW, epic1.getId(), Duration.ofHours(3), LocalDateTime.now().plusDays(5));

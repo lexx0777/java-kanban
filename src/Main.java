@@ -12,7 +12,7 @@ public class Main {
     static Epic epic;
 
 
-    public static void main(String[] args) throws TaskSaveDateTimeException {
+    public static void main(String[] args) {
         taskManager = Managers.getDefault();
 
         test1_tasks();
@@ -21,7 +21,7 @@ public class Main {
         test4_remove();
     }
 
-    static void test1_tasks() throws TaskSaveDateTimeException {
+    static void test1_tasks() {
         taskManager.add(new Task(0, "Задача1", "Описание задачи1", TaskStatus.NEW));
         taskManager.add(new Task(0, "Задача2", "Описание задачи2", TaskStatus.NEW, Duration.ofHours(3), LocalDateTime.now()));
         taskManager.add(new Task(0, "Задача3", "Описание задачи3", TaskStatus.NEW, Duration.ofHours(3), LocalDateTime.now()));
@@ -31,7 +31,7 @@ public class Main {
         System.out.println("task 3 " + task.toString());
     }
 
-    static void test2_epics_subtasks() throws TaskSaveDateTimeException {
+    static void test2_epics_subtasks() {
         taskManager.add(new Epic(0, "Epic1", "Описание Epic1"));
         taskManager.add(new Epic(0, "Epic2", "Описание Epic2"));
         taskManager.add(new Epic(0, "Epic3", "Описание Epic3"));

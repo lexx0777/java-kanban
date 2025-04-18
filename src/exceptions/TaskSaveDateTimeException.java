@@ -2,7 +2,7 @@ package exceptions;
 
 import model.Task;
 
-public class TaskSaveDateTimeException extends Throwable {
+public class TaskSaveDateTimeException extends RuntimeException {
     Task    task;
 
     public TaskSaveDateTimeException(Task task) {

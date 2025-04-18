@@ -7,11 +7,11 @@ import java.util.TreeSet;
 
 public interface TaskManager {
 
-    void add(Task task) throws TaskSaveDateTimeException;
+    void add(Task task);
 
-    void add(Epic epic) throws TaskSaveDateTimeException;
+    void add(Epic epic);
 
-    boolean add(Subtask subtask) throws TaskSaveDateTimeException;
+    boolean add(Subtask subtask);
 
     void updEpicStatus(Epic epic);
 
