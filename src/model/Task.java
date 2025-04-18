@@ -108,8 +108,7 @@ public class Task {
         this.endTime = endTime;
     }
 
-    public String dateTimeOrNull(LocalDateTime dateTime)
-    {
+    public String dateTimeOrNull(LocalDateTime dateTime) {
         return dateTime != null ? dateTime.format(formatter) : "null";
     }
 
