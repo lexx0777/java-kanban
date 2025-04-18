@@ -130,7 +130,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             }
         }
         if (getNextId() <= id)
-            setNextId(id+1);
+            setNextId(id + 1);
     }
 
     public static FileBackedTaskManager loadFromFile(File file) {
