@@ -172,15 +172,12 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         //taskManager.add(new Task(0, "Task"+3, "Описание Task"+3, TaskStatus.IN_PROGRESS, Duration.ofHours(1), LocalDateTime.now()));
         //taskManager.add(new Task(0, "Task"+4, "Описание Task"+4, TaskStatus.IN_PROGRESS, Duration.ofHours(10), LocalDateTime.now().plusMinutes(10)));
 
-
-/*
-        int i = 7;
-        Epic epic1 = new Epic(0, "Epic"+i, "Описание Epic"+i);
-        taskManager.add(epic1);
-        taskManager.add(new Subtask(0, "subtask"+i+"_1", "Описание subtask"+i+"_1", TaskStatus.DONE, epic1.getId(), Duration.ofHours(3), LocalDateTime.now().minusDays(20)));
-        taskManager.add(new Subtask(0, "subtask"+i+"_2", "Описание subtask"+i+"_2", TaskStatus.DONE, epic1.getId(), Duration.ofMinutes(30), LocalDateTime.now().minusDays(21)));
-        taskManager.add(new Subtask(0, "subtask"+i+"_3", "Описание subtask"+i+"_3", TaskStatus.IN_PROGRESS, epic1.getId(), Duration.ofHours(1), LocalDateTime.now().minusDays(22)));
-*/
+        //int i = 7;
+        //Epic epic1 = new Epic(0, "Epic"+i, "Описание Epic"+i);
+        //taskManager.add(epic1);
+        //taskManager.add(new Subtask(0, "subtask"+i+"_1", "Описание subtask"+i+"_1", TaskStatus.DONE, epic1.getId(), Duration.ofHours(3), LocalDateTime.now().minusDays(20)));
+        //taskManager.add(new Subtask(0, "subtask"+i+"_2", "Описание subtask"+i+"_2", TaskStatus.DONE, epic1.getId(), Duration.ofMinutes(30), LocalDateTime.now().minusDays(21)));
+        //taskManager.add(new Subtask(0, "subtask"+i+"_3", "Описание subtask"+i+"_3", TaskStatus.IN_PROGRESS, epic1.getId(), Duration.ofHours(1), LocalDateTime.now().minusDays(22)));
 
         System.out.println("PrioritizedTasks:");
         for (Task task : taskManager.getPrioritizedTasks()) {
