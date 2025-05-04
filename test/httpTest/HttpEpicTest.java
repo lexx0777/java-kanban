@@ -1,8 +1,8 @@
 package httpTest;
 
-import controllers.InMemoryTaskManager;
+//import controllers.InMemoryTaskManager;
 import http.HttpTaskServer;
-import http.json.JsonTaskBuilder;
+//import http.json.JsonTaskBuilder;
 import controllers.TaskManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -22,7 +22,7 @@ public class HttpEpicTest {
 
     TaskManager manager = Managers.getDefault();
     HttpTaskServer server = new HttpTaskServer(manager);
-    JsonTaskBuilder json = server.getJsonTaskBuilder();
+    //JsonTaskBuilder json = server.getJsonTaskBuilder();
     URI epicUrl = URI.create("http://localhost:8080/epics");
 
     public HttpEpicTest() throws IOException {
