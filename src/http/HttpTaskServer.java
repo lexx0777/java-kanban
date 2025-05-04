@@ -30,7 +30,7 @@ public class HttpTaskServer {
     public void start() {
         server.createContext("/tasks", new TaskHandler(taskManager));
         server.createContext("/subtasks", new SubtaskHandler(taskManager));
-        server.createContext("/epic", new EpicHandler(taskManager));
+        server.createContext("/epics", new EpicHandler(taskManager));
         server.createContext("/history", new HistoryHandler(taskManager));
         server.createContext("/prioritized", new PrioritizedHandler(taskManager));
         server.start();
@@ -50,6 +50,7 @@ public class HttpTaskServer {
         manager.add(new Subtask(0, "Подзадача 1", "Почистить", TaskStatus.IN_PROGRESS, epic.getId(), Duration.ofMinutes(20), LocalDateTime.now()));
         manager.add(new Subtask(0, "Подзадача 2", "Сварить", TaskStatus.NEW, epic.getId(), Duration.ofMinutes(30), LocalDateTime.now().plusMinutes(21)));
         manager.add(new Subtask(0, "Подзадача 3", "Съесть", TaskStatus.NEW, epic.getId(), Duration.ofMinutes(10), LocalDateTime.now().plusMinutes(60)));
+        manager.add(new Epic(0, "Эпик 1", "Ужин"));
         HttpTaskServer server = new HttpTaskServer(manager);
         server.start();
 

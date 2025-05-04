@@ -16,8 +16,8 @@ public class Main {
 
         test1_tasks();
         test2_epics_subtasks();
-        test3_upd_del();
-        test4_remove();
+        //test3_upd_del();
+        //test4_remove();
     }
 
     static void test1_tasks() {
@@ -33,10 +33,12 @@ public class Main {
     static void test2_epics_subtasks() {
         taskManager.add(new Epic(0, "Epic1", "Описание Epic1"));
         taskManager.add(new Epic(0, "Epic2", "Описание Epic2"));
-        taskManager.add(new Epic(0, "Epic3", "Описание Epic3"));
+
+        Epic epic = new Epic(0, "Epic3", "Описание Epic3");
+        taskManager.add(epic);
         System.out.println(taskManager.getEpics().toString());
 
-        epic  = taskManager.getEpicById(6);
+        epic  = taskManager.getEpicById(epic.getId());
         System.out.println("getEpicById " + epic.toString());
 
         subtask = new Subtask(0, "subtask3_1", "Описание subtask3_1", TaskStatus.DONE, epic.getId(), Duration.ofHours(3), LocalDateTime.now().minusDays(20));
@@ -49,9 +51,12 @@ public class Main {
             System.out.println("Пересечение по времени. Подзадача не добавлена");
         }
 
-        subtask  = taskManager.getSubtaskById(7);
+        subtask  = taskManager.getSubtaskById(subtask.getId());
         System.out.println("subtask " + subtask.toString());
 
+        System.out.println("epics " + taskManager.getEpics().toString());
+
+        taskManager.add(new Epic(0, "Epic2", "Описание Epic2"));
         System.out.println("epics " + taskManager.getEpics().toString());
 
         taskManager.removeSubtaskById(subtask.getId());
