@@ -37,7 +37,7 @@ public class JsonTaskBuilder {
         @Override
         public Task deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject jsonObject = json.getAsJsonObject();
-            String tittle = jsonObject.get("tittle").getAsString();
+            String tittle = jsonObject.get("title").getAsString();
             String description = jsonObject.get("description").getAsString();
             Duration duration = Duration.ofMinutes(jsonObject.get("duration").getAsLong());
             LocalDateTime startTime = LocalDateTime.parse(jsonObject.get("startTime").getAsString(),
@@ -58,7 +58,7 @@ public class JsonTaskBuilder {
         @Override
         public Subtask deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject jsonObject = json.getAsJsonObject();
-            String tittle = jsonObject.get("tittle").getAsString();
+            String tittle = jsonObject.get("title").getAsString();
             String description = jsonObject.get("description").getAsString();
             Duration duration = Duration.ofMinutes(jsonObject.get("duration").getAsLong());
             LocalDateTime startTime = LocalDateTime.parse(jsonObject.get("startTime").getAsString(),
@@ -80,7 +80,7 @@ public class JsonTaskBuilder {
         @Override
         public Epic deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject jsonObject = json.getAsJsonObject();
-            String tittle = jsonObject.get("tittle").getAsString();
+            String tittle = jsonObject.get("title").getAsString();
             String description = jsonObject.get("description").getAsString();
             return new Epic(0, tittle, description);
 

@@ -58,6 +58,7 @@ public class HttpTaskServer {
         //GET http://localhost:8080/epics
         //GET http://localhost:8080/subtasks
         //DELETE http://localhost:8080/tasks/1
+        //GET http://localhost:8080/prioritized
 
     }
 }
