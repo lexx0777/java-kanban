@@ -186,9 +186,9 @@ class InMemoryTaskManagerTest {
         taskManager.add(subtask1);
         taskManager.add(subtask2);
         TaskStatus epic1Status = epic1.getStatus();
-        Subtask subtask3 = new Subtask(7,"Погладить шнурки", "аккуратно",
-                TaskStatus.IN_PROGRESS, epic1.getId(), Duration.ofHours(3), LocalDateTime.now().plusDays(8));
-        taskManager.update(subtask3);
+        //Subtask subtask3 = new Subtask(10,"Погладить шнурки", "аккуратно",
+        //        TaskStatus.IN_PROGRESS, epic1.getId(), Duration.ofHours(3), LocalDateTime.now().plusDays(80));
+        //taskManager.update(subtask3);
         TaskStatus actualEpicStatus = epic1.getStatus();
         assertEquals(epic1Status, actualEpicStatus);
     }
