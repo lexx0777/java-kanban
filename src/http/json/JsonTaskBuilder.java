@@ -58,7 +58,7 @@ public class JsonTaskBuilder {
         @Override
         public Subtask deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject jsonObject = json.getAsJsonObject();
-            String tittle = jsonObject.get("title").getAsString();
+            String title = jsonObject.get("title").getAsString();
             String description = jsonObject.get("description").getAsString();
             Duration duration = Duration.ofMinutes(jsonObject.get("duration").getAsLong());
             LocalDateTime startTime = LocalDateTime.parse(jsonObject.get("startTime").getAsString(),
@@ -68,9 +68,9 @@ public class JsonTaskBuilder {
             if (jsonObject.has("id") && jsonObject.get("id").getAsInt() != 0) {
                 int id = jsonObject.get("id").getAsInt();
                 TaskStatus status = TaskStatus.valueOf(jsonObject.get("status").getAsString());
-                return new Subtask(id, tittle, description, status, epicId, duration, startTime);
+                return new Subtask(id, title, description, status, epicId, duration, startTime);
             } else {
-                return new Subtask(0, tittle, description, TaskStatus.NEW, epicId, duration, startTime);
+                return new Subtask(0, title, description, TaskStatus.NEW, epicId, duration, startTime);
             }
 
         }
