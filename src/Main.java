@@ -16,8 +16,8 @@ public class Main {
 
         test1_tasks();
         test2_epics_subtasks();
-        //test3_upd_del();
-        //test4_remove();
+        test3_upd_del();
+        test4_remove();
     }
 
     static void test1_tasks() {
