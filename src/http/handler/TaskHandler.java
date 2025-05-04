@@ -95,5 +95,4 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
 
                         }, () -> catchIOException(() -> sendEndpointNotFound(httpExchange)));
     }
-
 }

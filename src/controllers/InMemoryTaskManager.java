@@ -284,6 +284,7 @@ public class InMemoryTaskManager  implements TaskManager {
 
     private boolean isValidateDateTime(Task task) {
         return prioritizedTasks.stream()
+                .filter(t -> Objects.nonNull(task.getStartTime()))
                 .anyMatch(t -> t.getStartTime().isBefore(task.getEndTime())
                         && task.getStartTime().isBefore(t.getEndTime()));
     }

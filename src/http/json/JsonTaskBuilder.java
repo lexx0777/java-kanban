@@ -33,11 +33,11 @@ public class JsonTaskBuilder {
         return this.gson.fromJson(json, clazz);
     }
 
-    class TaskDeserializer implements JsonDeserializer<Task> {
+    static class TaskDeserializer implements JsonDeserializer<Task> {
         @Override
         public Task deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject jsonObject = json.getAsJsonObject();
-            String name = jsonObject.get("name").getAsString();
+            String tittle = jsonObject.get("tittle").getAsString();
             String description = jsonObject.get("description").getAsString();
             Duration duration = Duration.ofMinutes(jsonObject.get("duration").getAsLong());
             LocalDateTime startTime = LocalDateTime.parse(jsonObject.get("startTime").getAsString(),
@@ -46,19 +46,19 @@ public class JsonTaskBuilder {
             if (jsonObject.has("id") && jsonObject.get("id").getAsInt() != 0) {
                 int id = jsonObject.get("id").getAsInt();
                 TaskStatus status = TaskStatus.valueOf(jsonObject.get("status").getAsString());
-                return new Task(name, description, status, id, duration, startTime);
+                return new Task(id, tittle, description, status, duration, startTime);
             } else {
-                return new Task(name, description, duration, startTime);
+                return new Task(0, tittle, description, TaskStatus.NEW, duration, startTime);
             }
 
         }
     }
 
-    class SubtaskDeserializer implements JsonDeserializer<Subtask> {
+    static class SubtaskDeserializer implements JsonDeserializer<Subtask> {
         @Override
         public Subtask deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject jsonObject = json.getAsJsonObject();
-            String name = jsonObject.get("name").getAsString();
+            String tittle = jsonObject.get("tittle").getAsString();
             String description = jsonObject.get("description").getAsString();
             Duration duration = Duration.ofMinutes(jsonObject.get("duration").getAsLong());
             LocalDateTime startTime = LocalDateTime.parse(jsonObject.get("startTime").getAsString(),
@@ -67,41 +67,41 @@ public class JsonTaskBuilder {
 
             if (jsonObject.has("id") && jsonObject.get("id").getAsInt() != 0) {
                 int id = jsonObject.get("id").getAsInt();
-                StatusTask status = StatusTask.valueOf(jsonObject.get("status").getAsString());
-                return new Subtask(name, description, status, epicId, id, duration, startTime);
+                TaskStatus status = TaskStatus.valueOf(jsonObject.get("status").getAsString());
+                return new Subtask(id, tittle, description, status, epicId, duration, startTime);
             } else {
-                return new Subtask(name, description, epicId, duration, startTime);
+                return new Subtask(0, tittle, description, TaskStatus.NEW, epicId, duration, startTime);
             }
 
         }
     }
 
-    class EpicDeserializer implements JsonDeserializer<Epic> {
+    static class EpicDeserializer implements JsonDeserializer<Epic> {
         @Override
         public Epic deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             JsonObject jsonObject = json.getAsJsonObject();
-            String name = jsonObject.get("name").getAsString();
+            String tittle = jsonObject.get("tittle").getAsString();
             String description = jsonObject.get("description").getAsString();
-            return new Epic(name, description);
+            return new Epic(0, tittle, description);
 
         }
     }
 
-    class LocalDateTimeAdapter extends TypeAdapter<LocalDateTime> {
-        private static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    static class LocalDateTimeAdapter extends TypeAdapter<LocalDateTime> {
+        private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         @Override
         public void write(final JsonWriter jsonWriter, final LocalDateTime localDateTime) throws IOException {
-            jsonWriter.value(localDateTime.format(dtf));
+            jsonWriter.value(localDateTime.format(dateTimeFormatter));
         }
 
         @Override
         public LocalDateTime read(final JsonReader jsonReader) throws IOException {
-            return LocalDateTime.parse(jsonReader.nextString(), dtf);
+            return LocalDateTime.parse(jsonReader.nextString(), dateTimeFormatter);
         }
     }
 
-    class DurationAdapter extends TypeAdapter<Duration> {
+    static class DurationAdapter extends TypeAdapter<Duration> {
 
         @Override
         public void write(final JsonWriter jsonWriter, final Duration duration) throws IOException {
