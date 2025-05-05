@@ -42,7 +42,7 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library" exported="">
-      <library>
+      <library name="Gson2.9.0">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/gson-2.9.0.jar!/" />
         </CLASSES>
