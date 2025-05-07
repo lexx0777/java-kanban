@@ -83,7 +83,6 @@ public class JsonTaskBuilder {
             String tittle = jsonObject.get("title").getAsString();
             String description = jsonObject.get("description").getAsString();
             return new Epic(0, tittle, description);
-
         }
     }
 
@@ -113,6 +112,4 @@ public class JsonTaskBuilder {
             return Duration.ofMinutes(jsonReader.nextInt());
         }
     }
-
-
 }

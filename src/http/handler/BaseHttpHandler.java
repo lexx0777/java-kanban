@@ -91,6 +91,15 @@ public class BaseHttpHandler {
         }
     }
 
+    protected void sendBadRequest(HttpExchange httpExchange, String text) throws IOException {
+        byte[] response = text.getBytes(StandardCharsets.UTF_8);
+        httpExchange.getResponseHeaders().set("Content-Type", "application/json");
+        httpExchange.sendResponseHeaders(400, response.length);
+        try (OutputStream os = httpExchange.getResponseBody()) {
+            os.write(response);
+        }
+    }
+
     protected void sendEndpointNotFound(HttpExchange httpExchange) throws IOException {
         httpExchange.getResponseHeaders().set("Content-Type", "application/json");
         httpExchange.sendResponseHeaders(405, 0);

@@ -26,8 +26,28 @@ public class Task {
         this.endTime = (startTime != null ? startTime.plus(duration) : null);
     }
 
+    public Task(String title, String description, TaskStatus status, Duration duration, LocalDateTime startTime) {
+        this.id = 0;
+        this.title = title;
+        this.description = description;
+        this.status = status;
+        this.duration = duration;
+        this.startTime = startTime;
+        this.endTime = (startTime != null ? startTime.plus(duration) : null);
+    }
+
     public Task(int id, String title, String description, TaskStatus status) {
         this.id = id;
+        this.title = title;
+        this.description = description;
+        this.status = status;
+        this.duration = Duration.ZERO;
+        this.startTime = null;
+        this.endTime = null;
+    }
+
+    public Task(String title, String description, TaskStatus status) {
+        this.id = 0;
         this.title = title;
         this.description = description;
         this.status = status;

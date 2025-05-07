@@ -24,9 +24,9 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
     @Override
     protected void processGet(HttpExchange exchange, String path) throws IOException {
         String[] pathParts = path.split("/");
-         if (pathParts.length == 3)
+        if (pathParts.length == 3)
             handleGetTask(exchange, path);
-         else
+        else
             handleGetTasks(exchange);
     }
 
@@ -67,6 +67,8 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
             sendTextUpdate(httpExchange, String.format("Задача добавлена: id %d", task.getId()));
         } catch (IntersectionException e) {
             sendHasInteractions(httpExchange, e.getMessage());
+        } catch(Exception e) { // JsonParseException или другая ошибка десериализации
+            sendBadRequest(httpExchange, "Неверный формат задачи: " + e.getMessage());
         }
     }
 
@@ -77,6 +79,8 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
             sendTextUpdate(httpExchange, String.format("Задача %d обновлена", task.getId()));
         } catch (NotFoundException e) {
             sendNotFound(httpExchange, e.getMessage());
+        } catch(Exception e) { // JsonParseException или другая ошибка десериализации
+            sendBadRequest(httpExchange, "Неверный формат задачи: " + e.getMessage());
         }
     }
 

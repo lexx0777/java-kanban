@@ -34,7 +34,9 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
             case 2:
                 handleGetEpics(exchange);
                 break;
-            default: sendEndpointNotFound(exchange); break;
+            default:
+                sendEndpointNotFound(exchange);
+                break;
         }
     }
 
