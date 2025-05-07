@@ -21,33 +21,6 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
         this.jsonTaskBuilder = new JsonTaskBuilder();
     }
 
-
-    @Override
-    public void handle(HttpExchange httpExchange) throws IOException {
-        String path = httpExchange.getRequestURI().getPath();
-        String requestBody = getRequestBody(httpExchange);
-        /*Endpoint endpoint = Endpoint.getEndpoint(path, httpExchange.getRequestMethod(), requestBody);
-        switch (endpoint) {
-            case GET_SUBTASKS:
-                handleGetSubtasks(httpExchange);
-                break;
-            case GET_SUBTASK:
-                handleGetSubtask(httpExchange, path);
-                break;
-            case DELETE_SUBTASK:
-                handleDeleteSubtask(httpExchange, path);
-                break;
-            case CREATE_SUBTASK:
-                handleAddSubtask(httpExchange, requestBody);
-                break;
-            case UPDATE_SUBTASK:
-                handleUpdateSubtask(httpExchange, requestBody);
-                break;
-            default:
-                sendEndpointNotFound(httpExchange);
-        }*/
-    }
-
     @Override
     protected void processGet(HttpExchange exchange, String path, boolean hasId) throws IOException {
         if (hasId)
@@ -59,7 +32,7 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
     @Override
     protected void processPost(HttpExchange exchange, String path, boolean hasId) throws IOException {
         if (hasId)
-            handleAddSubtask(exchange, getRequestBody(exchange));
+            handleUpdateSubtask(exchange, getRequestBody(exchange));
         else
             handleAddSubtask(exchange, getRequestBody(exchange));
     }
