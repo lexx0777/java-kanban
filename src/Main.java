@@ -21,8 +21,8 @@ public class Main {
     }
 
     static void test1_tasks() {
-        taskManager.add(new Task(0, "Задача1", "Описание задачи1", TaskStatus.NEW));
-        taskManager.add(new Task(0, "Задача2", "Описание задачи2", TaskStatus.NEW, Duration.ofHours(3), LocalDateTime.now()));
+        taskManager.add(new Task(0, "Задача1", "Описание задачи1", TaskStatus.NEW, Duration.ofHours(30), LocalDateTime.now().plusDays(5)));
+        taskManager.add(new Task(0, "Задача2", "Описание задачи2", TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.now().minusDays(3)));
         taskManager.add(new Task(0, "Задача3", "Описание задачи3", TaskStatus.NEW, Duration.ofHours(3), LocalDateTime.now()));
         System.out.println(taskManager.getTasks());
 
@@ -33,21 +33,30 @@ public class Main {
     static void test2_epics_subtasks() {
         taskManager.add(new Epic(0, "Epic1", "Описание Epic1"));
         taskManager.add(new Epic(0, "Epic2", "Описание Epic2"));
-        taskManager.add(new Epic(0, "Epic3", "Описание Epic3"));
+
+        Epic epic = new Epic(0, "Epic3", "Описание Epic3");
+        taskManager.add(epic);
         System.out.println(taskManager.getEpics().toString());
 
-        epic  = taskManager.getEpicById(6);
+        epic  = taskManager.getEpicById(epic.getId());
         System.out.println("getEpicById " + epic.toString());
 
         subtask = new Subtask(0, "subtask3_1", "Описание subtask3_1", TaskStatus.DONE, epic.getId(), Duration.ofHours(3), LocalDateTime.now().minusDays(20));
         taskManager.add(subtask);
 
-        taskManager.add(new Subtask(0, "subtask3_2", "Описание subtask3_2", TaskStatus.IN_PROGRESS, epic.getId(), Duration.ofHours(3), LocalDateTime.now()));
-        System.out.println(taskManager.getSubtasks().toString());
+        try {
+            taskManager.add(new Subtask(0, "subtask3_2", "Описание subtask3_2", TaskStatus.IN_PROGRESS, epic.getId(), Duration.ofHours(3), LocalDateTime.now()));
+            System.out.println(taskManager.getSubtasks().toString());
+        } catch (Exception e) {
+            System.out.println("Пересечение по времени. Подзадача не добавлена");
+        }
 
-        subtask  = taskManager.getSubtaskById(8);
+        subtask  = taskManager.getSubtaskById(subtask.getId());
         System.out.println("subtask " + subtask.toString());
 
+        System.out.println("epics " + taskManager.getEpics().toString());
+
+        taskManager.add(new Epic(0, "Epic2", "Описание Epic2"));
         System.out.println("epics " + taskManager.getEpics().toString());
 
         taskManager.removeSubtaskById(subtask.getId());
