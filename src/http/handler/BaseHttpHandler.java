@@ -25,8 +25,6 @@ public class BaseHttpHandler {
             } else {
                 hasId = false;
             }
-            int partsCount = path.split("/").length;
-
             switch (method) {
                 case "GET":
                     processGet(exchange, path);
