@@ -1,10 +1,10 @@
 package http.handler;
 
+import com.google.gson.JsonParser;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import exceptions.IntersectionException;
 import exceptions.NotFoundException;
-import http.Endpoint;
 import http.json.JsonTaskBuilder;
 import controllers.TaskManager;
 import model.Epic;
@@ -22,31 +22,32 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
         this.jsonTaskBuilder = new JsonTaskBuilder();
     }
 
+    @Override
+    protected void processGet(HttpExchange exchange, String path, boolean hasId) throws IOException {
+        if (hasId) {
+            String[] pathParts = path.split("/");
+            if (pathParts.length == 4)
+                handleGetEpicSubtasks(exchange, path);
+            else
+                handleGetEpic(exchange, path);
+        } else
+            handleGetEpics(exchange);
+    }
 
     @Override
-    public void handle(HttpExchange httpExchange) throws IOException {
-        String path = httpExchange.getRequestURI().getPath();
-        String requestBody = getRequestBody(httpExchange);
-        Endpoint endpoint = Endpoint.getEndpoint(path, httpExchange.getRequestMethod(), requestBody);
-        switch (endpoint) {
-            case GET_EPICS:
-                handleGetEpics(httpExchange);
-                break;
-            case GET_EPIC:
-                handleGetEpic(httpExchange, path);
-                break;
-            case GET_EPIC_SUBTASKS:
-                handleGetEpicSubtasks(httpExchange, path);
-                break;
-            case DELETE_EPIC:
-                handleDeleteEpic(httpExchange, path);
-                break;
-            case CREATE_EPIC:
-                handleAddEpic(httpExchange, requestBody);
-                break;
-            default:
-                sendEndpointNotFound(httpExchange);
-        }
+    protected void processPost(HttpExchange exchange, String path, boolean hasId) throws IOException {
+        if (hasId)
+            handleAddEpic(exchange, getRequestBody(exchange));
+        else
+            sendEndpointNotFound(exchange);
+    }
+
+    @Override
+    protected void processDelete(HttpExchange exchange, String path, boolean hasId) throws IOException {
+        if (hasId)
+            handleDeleteEpic(exchange, path);
+        else
+            sendEndpointNotFound(exchange);
     }
 
     private void handleGetEpics(HttpExchange httpExchange) throws IOException {

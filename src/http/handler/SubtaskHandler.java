@@ -4,7 +4,6 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import exceptions.IntersectionException;
 import exceptions.NotFoundException;
-import http.Endpoint;
 import http.json.JsonTaskBuilder;
 import controllers.TaskManager;
 import model.Subtask;
@@ -27,7 +26,7 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
     public void handle(HttpExchange httpExchange) throws IOException {
         String path = httpExchange.getRequestURI().getPath();
         String requestBody = getRequestBody(httpExchange);
-        Endpoint endpoint = Endpoint.getEndpoint(path, httpExchange.getRequestMethod(), requestBody);
+        /*Endpoint endpoint = Endpoint.getEndpoint(path, httpExchange.getRequestMethod(), requestBody);
         switch (endpoint) {
             case GET_SUBTASKS:
                 handleGetSubtasks(httpExchange);
@@ -46,7 +45,31 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
                 break;
             default:
                 sendEndpointNotFound(httpExchange);
-        }
+        }*/
+    }
+
+    @Override
+    protected void processGet(HttpExchange exchange, String path, boolean hasId) throws IOException {
+        if (hasId)
+            handleGetSubtask(exchange, path);
+        else
+            handleGetSubtasks(exchange);
+    }
+
+    @Override
+    protected void processPost(HttpExchange exchange, String path, boolean hasId) throws IOException {
+        if (hasId)
+            handleAddSubtask(exchange, getRequestBody(exchange));
+        else
+            handleAddSubtask(exchange, getRequestBody(exchange));
+    }
+
+    @Override
+    protected void processDelete(HttpExchange exchange, String path, boolean hasId) throws IOException {
+        if (hasId)
+            handleDeleteSubtask(exchange, path);
+        else
+            sendEndpointNotFound(exchange);
     }
 
     private void handleGetSubtasks(HttpExchange httpExchange) throws IOException {

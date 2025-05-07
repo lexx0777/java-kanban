@@ -1,10 +1,10 @@
 package http.handler;
 
+import com.google.gson.JsonParser;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import exceptions.IntersectionException;
 import exceptions.NotFoundException;
-import http.Endpoint;
 import http.json.JsonTaskBuilder;
 import controllers.TaskManager;
 import model.Task;
@@ -12,6 +12,8 @@ import model.Task;
 import java.io.IOException;
 
 public class TaskHandler extends BaseHttpHandler implements HttpHandler {
+
+
 
     private final TaskManager taskManager;
 
@@ -22,31 +24,28 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
         this.jsonTaskBuilder = new JsonTaskBuilder();
     }
 
+    @Override
+    protected void processGet(HttpExchange exchange, String path, boolean hasId) throws IOException {
+         if (hasId)
+            handleGetTask(exchange, path);
+        else
+            handleGetTasks(exchange);
+    }
 
     @Override
-    public void handle(HttpExchange httpExchange) throws IOException {
-        String path = httpExchange.getRequestURI().getPath();
-        String requestBody = getRequestBody(httpExchange);
-        Endpoint endpoint = Endpoint.getEndpoint(path, httpExchange.getRequestMethod(), requestBody);
-        switch (endpoint) {
-            case GET_TASKS:
-                handleGetTasks(httpExchange);
-                break;
-            case GET_TASK:
-                handleGetTask(httpExchange, path);
-                break;
-            case DELETE_TASK:
-                handleDeleteTask(httpExchange, path);
-                break;
-            case CREATE_TASK:
-                handleAddTask(httpExchange, requestBody);
-                break;
-            case UPDATE_TASK:
-                handleUpdateTask(httpExchange, requestBody);
-                break;
-            default:
-                sendEndpointNotFound(httpExchange);
-        }
+    protected void processPost(HttpExchange exchange, String path, boolean hasId) throws IOException {
+        if (hasId)
+            handleUpdateTask(exchange, getRequestBody(exchange));
+        else
+            handleAddTask(exchange, getRequestBody(exchange));
+    }
+
+    @Override
+    protected void processDelete(HttpExchange exchange, String path, boolean hasId) throws IOException {
+        if (hasId)
+            handleDeleteTask(exchange, path);
+        else
+            sendEndpointNotFound(exchange);
     }
 
     private void handleGetTasks(HttpExchange httpExchange) throws IOException {
