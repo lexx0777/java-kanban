@@ -22,15 +22,20 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
     }
 
     @Override
-    protected void processGet(HttpExchange exchange, String path, boolean hasId) throws IOException {
-        if (hasId) {
-            String[] pathParts = path.split("/");
-            if (pathParts.length == 4)
+    protected void processGet(HttpExchange exchange, String path) throws IOException {
+        String[] pathParts = path.split("/");
+        switch (pathParts.length) {
+            case 4:
                 handleGetEpicSubtasks(exchange, path);
-            else
+                break;
+            case 3:
                 handleGetEpic(exchange, path);
-        } else
-            handleGetEpics(exchange);
+                break;
+            case 2:
+                handleGetEpics(exchange);
+                break;
+            default: sendEndpointNotFound(exchange); break;
+        }
     }
 
     @Override
@@ -42,8 +47,9 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
     }
 
     @Override
-    protected void processDelete(HttpExchange exchange, String path, boolean hasId) throws IOException {
-        if (hasId)
+    protected void processDelete(HttpExchange exchange, String path) throws IOException {
+        String[] pathParts = path.split("/");
+        if (pathParts.length == 3)
             handleDeleteEpic(exchange, path);
         else
             sendEndpointNotFound(exchange);

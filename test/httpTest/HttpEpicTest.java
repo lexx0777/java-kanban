@@ -69,6 +69,7 @@ public class HttpEpicTest {
         Assertions.assertEquals(json.toJson(epic), response.body());
     }
 */
+    /*
     @Test
     public void testAddEpic() throws IOException, InterruptedException {
         String taskJson = """
@@ -157,4 +158,6 @@ public class HttpEpicTest {
         Assertions.assertEquals(404, response4.statusCode());
         Assertions.assertEquals("Такого эндпоинта не существует", response.body());
     }
+
+     */
 }

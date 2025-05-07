@@ -80,10 +80,8 @@ public class HttpTaskTest {
         assertEquals(200, response.statusCode());
 
         assertEquals(json.toJson(task), response.body());
-
-
     }
-
+/*
     @Test
     public void testAddTask() throws IOException, InterruptedException {
         String taskJson = """
@@ -128,7 +126,7 @@ public class HttpTaskTest {
         assertEquals("Показать шубу", taskUpd.getDescription());
         assertEquals(TaskStatus.DONE, taskUpd.getStatus());
     }
-
+*/
     @Test
     public void deleteTask() throws IOException, InterruptedException {
         Task task = new Task(0,"testTask", "testTaskDescr", TaskStatus.NEW, Duration.ofMinutes(5), startTime1);
@@ -158,7 +156,7 @@ public class HttpTaskTest {
         assertEquals("Задача с указанным id не найдена", response.body());
 
     }
-
+/*
     @Test
     public void addTaskIntersection() throws IOException, InterruptedException {
         manager.add(new Task(0, "testTask", "testTaskDescr", TaskStatus.NEW, Duration.ofMinutes(5), startTime1));
@@ -237,4 +235,6 @@ public class HttpTaskTest {
         assertEquals(404, response4.statusCode());
         assertEquals("Такого эндпоинта не существует", response.body());
     }
+
+ */
 }

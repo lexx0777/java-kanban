@@ -18,7 +18,7 @@ public class PrioritizedHandler extends BaseHttpHandler implements HttpHandler {
     }
 
     @Override
-    protected void processGet(HttpExchange exchange, String path, boolean hasId) throws IOException {
+    protected void processGet(HttpExchange exchange, String path) throws IOException {
         sendText(exchange, jsonTaskBuilder.toJson(taskManager.getPrioritizedTasks()));
     }
 }

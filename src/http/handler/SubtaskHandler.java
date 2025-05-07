@@ -22,8 +22,9 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
     }
 
     @Override
-    protected void processGet(HttpExchange exchange, String path, boolean hasId) throws IOException {
-        if (hasId)
+    protected void processGet(HttpExchange exchange, String path) throws IOException {
+        String[] pathParts = path.split("/");
+        if (pathParts.length == 3)
             handleGetSubtask(exchange, path);
         else
             handleGetSubtasks(exchange);
@@ -38,8 +39,9 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
     }
 
     @Override
-    protected void processDelete(HttpExchange exchange, String path, boolean hasId) throws IOException {
-        if (hasId)
+    protected void processDelete(HttpExchange exchange, String path) throws IOException {
+        String[] pathParts = path.split("/");
+        if (pathParts.length == 3)
             handleDeleteSubtask(exchange, path);
         else
             sendEndpointNotFound(exchange);

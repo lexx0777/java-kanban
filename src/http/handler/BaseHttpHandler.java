@@ -14,26 +14,28 @@ public class BaseHttpHandler {
 
 
     public void handle(HttpExchange exchange) throws IOException {
-        String requestBody = getRequestBody(exchange);
-        boolean hasId;
-        if (!requestBody.isEmpty()) {
-            hasId = JsonParser.parseString(requestBody).getAsJsonObject().has("id");
-        } else {
-            hasId = false;
-        }
-
         try {
             String method = exchange.getRequestMethod();
             String path = exchange.getRequestURI().getPath();
+
+            String requestBody = getRequestBody(exchange);
+            boolean hasId;
+            if (!requestBody.isEmpty()) {
+                hasId = JsonParser.parseString(requestBody).getAsJsonObject().has("id");
+            } else {
+                hasId = false;
+            }
+            int partsCount = path.split("/").length;
+
             switch (method) {
                 case "GET":
-                    processGet(exchange, path, hasId);
+                    processGet(exchange, path);
                     break;
                 case "POST":
                     processPost(exchange, path, hasId);
                     break;
                 case "DELETE":
-                    processDelete(exchange, path, hasId);
+                    processDelete(exchange, path);
                     break;
                 default:
                     sendNotFound(exchange, "Данный метод не предусмотрен");
@@ -43,11 +45,11 @@ public class BaseHttpHandler {
         }
     }
 
-    protected void processGet(HttpExchange exchange, String path, boolean hasId) throws IOException {}
+    protected void processGet(HttpExchange exchange, String path) throws IOException {}
 
     protected void processPost(HttpExchange exchange, String path, boolean hasId) throws IOException {}
 
-    protected void processDelete(HttpExchange exchange, String path, boolean hasId) throws IOException {}
+    protected void processDelete(HttpExchange exchange, String path) throws IOException {}
 
     protected void sendText(HttpExchange httpExchange, String text) throws IOException {
         byte[] response = text.getBytes(StandardCharsets.UTF_8);

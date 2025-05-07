@@ -12,8 +12,6 @@ import java.io.IOException;
 
 public class TaskHandler extends BaseHttpHandler implements HttpHandler {
 
-
-
     private final TaskManager taskManager;
 
     private final JsonTaskBuilder jsonTaskBuilder;
@@ -24,10 +22,11 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
     }
 
     @Override
-    protected void processGet(HttpExchange exchange, String path, boolean hasId) throws IOException {
-         if (hasId)
+    protected void processGet(HttpExchange exchange, String path) throws IOException {
+        String[] pathParts = path.split("/");
+         if (pathParts.length == 3)
             handleGetTask(exchange, path);
-        else
+         else
             handleGetTasks(exchange);
     }
 
@@ -40,8 +39,9 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
     }
 
     @Override
-    protected void processDelete(HttpExchange exchange, String path, boolean hasId) throws IOException {
-        if (hasId)
+    protected void processDelete(HttpExchange exchange, String path) throws IOException {
+        String[] pathParts = path.split("/");
+        if (pathParts.length == 3)
             handleDeleteTask(exchange, path);
         else
             sendEndpointNotFound(exchange);
