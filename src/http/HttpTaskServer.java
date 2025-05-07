@@ -44,12 +44,12 @@ public class HttpTaskServer {
 
     public static void main(String[] args) throws IOException {
         TaskManager manager = Managers.getDefault();
-        manager.add(new Task( "Задача 1", "Купить апельсин", TaskStatus.NEW, Duration.ofMinutes(10), LocalDateTime.now().minusMinutes(500)));
-        manager.add(new Task( "Задача 2", "Купить банан", TaskStatus.IN_PROGRESS, Duration.ofMinutes(10), LocalDateTime.of(2025, 3, 2, 10, 10)));
+        manager.add(new Task("Задача 1", "Купить апельсин", TaskStatus.NEW, Duration.ofMinutes(10), LocalDateTime.now().minusMinutes(500)));
+        manager.add(new Task("Задача 2", "Купить банан", TaskStatus.IN_PROGRESS, Duration.ofMinutes(10), LocalDateTime.of(2025, 3, 2, 10, 10)));
         Epic epic = new Epic("Эпик 1", "Обед");
         manager.add(epic);
         manager.add(new Subtask("Подзадача 1", "Почистить", TaskStatus.IN_PROGRESS, epic.getId(), Duration.ofMinutes(20), LocalDateTime.now()));
-        manager.add(new Subtask( "Подзадача 2", "Сварить", TaskStatus.NEW, epic.getId(), Duration.ofMinutes(30), LocalDateTime.now().plusMinutes(21)));
+        manager.add(new Subtask("Подзадача 2", "Сварить", TaskStatus.NEW, epic.getId(), Duration.ofMinutes(30), LocalDateTime.now().plusMinutes(21)));
         manager.add(new Subtask("Подзадача 3", "Съесть", TaskStatus.NEW, epic.getId(), Duration.ofMinutes(10), LocalDateTime.now().plusMinutes(60)));
         //manager.add(new Epic(0, "Эпик 2", "Ужин"));
         HttpTaskServer server = new HttpTaskServer(manager);
