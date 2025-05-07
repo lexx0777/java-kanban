@@ -67,7 +67,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
             sendTextUpdate(httpExchange, String.format("Задача добавлена: id %d", task.getId()));
         } catch (IntersectionException e) {
             sendHasInteractions(httpExchange, e.getMessage());
-        } catch(Exception e) { // JsonParseException или другая ошибка десериализации
+        } catch (Exception e) { // JsonParseException или другая ошибка десериализации
             sendBadRequest(httpExchange, "Неверный формат задачи: " + e.getMessage());
         }
     }
@@ -79,7 +79,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
             sendTextUpdate(httpExchange, String.format("Задача %d обновлена", task.getId()));
         } catch (NotFoundException e) {
             sendNotFound(httpExchange, e.getMessage());
-        } catch(Exception e) { // JsonParseException или другая ошибка десериализации
+        } catch (Exception e) { // JsonParseException или другая ошибка десериализации
             sendBadRequest(httpExchange, "Неверный формат задачи: " + e.getMessage());
         }
     }
