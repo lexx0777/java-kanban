@@ -43,11 +43,17 @@ public class BaseHttpHandler {
         }
     }
 
-    protected void processGet(HttpExchange exchange, String path) throws IOException {}
+    protected void processGet(HttpExchange exchange, String path) throws IOException {
 
-    protected void processPost(HttpExchange exchange, String path, boolean hasId) throws IOException {}
+    }
 
-    protected void processDelete(HttpExchange exchange, String path) throws IOException {}
+    protected void processPost(HttpExchange exchange, String path, boolean hasId) throws IOException {
+
+    }
+
+    protected void processDelete(HttpExchange exchange, String path) throws IOException {
+
+    }
 
     protected void sendText(HttpExchange httpExchange, String text) throws IOException {
         byte[] response = text.getBytes(StandardCharsets.UTF_8);
